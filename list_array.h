@@ -77,15 +77,6 @@ int list_empty(const list *l);
 int list_full(const list *l);
 
 /**
- * Adds a value to a list at location i. Value currently at location i is moved to the
- * end of the list. i must be between 0 and l->rear inclusive or assertion failure.
- * @param l pointer to a list.
- * @param v pointer to the value to insert.
- * @param i the index to put the new value.
- */
-void list_insert(list *l, list_data *v, int i);
-
-/**
  * Appends a value to the end of the list.
  * @param l pointer to a list.
  * @param v pointer to the value to append.
