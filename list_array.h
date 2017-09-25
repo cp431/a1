@@ -17,6 +17,38 @@ file description
 #include <limits.h>
 
 // typedefs
+#include "data.h"
+// Structures
+// typedefs
+
+/**
+ * Reference to data definition in "data.h".
+ */
+typedef prime list_data;
+/**
+ * Definition of function to print one element of list data.
+ * @param d pointer to list_data
+ */
+typedef void (*list_data_print)(const list_data *d);
+/**
+ * Definition of function to destroy one element of list data.
+ * @param d pointer to list_data
+ */
+typedef void (*list_data_destroy)(list_data *d);
+/**
+ * Definition of function to compare two elements of list data.
+ * @param d1 pointer to first data element.
+ * @param d2 pointer to second data element.
+ * @return -1 if d1 < d2; 1 if d1 > d2; 0 if d1 == d2.
+ */
+typedef int (*list_data_compare)(const list_data *d1, const list_data *d2);
+
+/**
+ * Definition of function to deep copy data from one pointer to another.
+ * @param target pointer to copy data to.
+ * @param source pointer to copy data from.
+ */
+typedef void (*list_data_copy)(list_data *target, const list_data *source);
 
 // Structures
 
@@ -25,6 +57,8 @@ file description
 /**
  * List header.
  */
+
+
 typedef struct {
 	unsigned int capacity; ///< current capacity of the list.
 	int rear; ///< index of next rear element of the list.
