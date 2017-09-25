@@ -10,7 +10,7 @@
  *
  */
 
-#include <primesieve.h>
+#include "prime_list.h"
 
 int main(int arc, int *argv[]) {
 
