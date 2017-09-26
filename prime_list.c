@@ -33,7 +33,7 @@ static void trim_prime_list(prime_list *list)
 
 // Implementations of the prime_list functions specified in prime_list.h.
 
-void init_prime_list(prime_list *list, const int *upper_prime_bound) 
+void init_prime_list(prime_list *list, const long long *upper_prime_bound) 
 {
 	// Initialize the array of prime_ints to hold 100 primes at the beginning.
 	list->capacity = INIT_LIST_LENGTH;
@@ -74,7 +74,7 @@ int get_length(const prime_list *list)
 	return list->used;
 }
 
-const prime_int get_element_at(const prime_list *list, const int *index)
+const prime_int get_element_at(const prime_list *list, const long long *index)
 {
 	// Ensure that the index does not exceed the list's boundaries.
 	assert(*index < get_length(list));

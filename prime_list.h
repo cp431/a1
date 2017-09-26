@@ -23,7 +23,7 @@ typedef struct
 * @param list pointer to the list of prime numbers.
 * @param upper_prime_bound the upper bound for prime number generation.
 */
-void init_prime_list(const prime_list *list, const int *upper_prime_bound);
+void init_prime_list(const prime_list *list, const long long *upper_prime_bound);
 
 /**
 * Returns the element at a given index.
@@ -31,7 +31,7 @@ void init_prime_list(const prime_list *list, const int *upper_prime_bound);
 * @param list pointer to the list of prime numbers.
 * @param index pointer to the index of the desired list element.
 */
-const prime_int get_element_at(const prime_list *list, const int *index);
+const prime_int get_element_at(const prime_list *list, const long long *index);
 
 /**
 * Returns the length of the list.
