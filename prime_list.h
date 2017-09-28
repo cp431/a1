@@ -9,8 +9,8 @@
 // Typedefs
 typedef struct 
 {
-	long long int capacity;
-	long long int used;
+	long long int *capacity;
+	long long int *used;
 	mpz_t *values;
 } prime_list;
 
@@ -39,7 +39,7 @@ mpz_t* get_prime_list_element_at(const prime_list *list, const long long int *in
 * @param list pointer to the list of prime numbers
 * @return the length of the prime_list this function was given
 */
-long long int get_prime_list_length(const prime_list *list);
+const long long int* get_prime_list_length(const prime_list *list);
 
 /**
 * Frees all memory taken by the prime list and sets capacity and used back to 0.
