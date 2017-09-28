@@ -81,18 +81,6 @@ void init_prime_list(prime_list *list, const long long int *upper_prime_bound)
 	mpz_clear(upper_bound);
 }
 
-const long long int* get_prime_list_length(const prime_list *list)
-{
-	return list->used;
-}
-
-mpz_t* get_prime_list_element_at(const prime_list *list, const long long int *index)
-{
-	// Ensure that the index does not exceed the list's boundaries.
-        assert(*index < *(get_prime_list_length(list)));
-	return &(list->values[*index]);
-}
-
 void clear_prime_list(prime_list *list)
 {
   // First free the memory taken by every mpz_t integer.
