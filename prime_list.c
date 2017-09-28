@@ -1,4 +1,7 @@
 #include "prime_list.h"
+#include <stdlib.h>
+#include <assert.h>
+#include <stddef.h>
 
 // Private helper functions.
 
@@ -12,9 +15,9 @@
 static void extend_prime_list(prime_list *list)
 {
 	list->capacity += INIT_LIST_LENGTH;
-	list->values = realloc(list->values, sizeof(list->values) * list->capacity);
+	list->values = realloc(list->values, sizeof(mpz_t) * list->capacity);
 	
-	assert(list->values != null);
+	assert(list->values != NULL);
 }
 
 /**
@@ -25,58 +28,76 @@ static void extend_prime_list(prime_list *list)
 */
 static void trim_prime_list(prime_list *list)
 {
-	list->values = realloc(list->values, sizeof(list->values) * list->used);
+	list->values = realloc(list->values, sizeof(mpz_t) * list->used);
 	list->capacity = list->used;
 	
-	assert(list->values != null);
+	assert(list->values != NULL);
 }
 
 // Implementations of the prime_list functions specified in prime_list.h.
 
-void init_prime_list(prime_list *list, const long long *upper_prime_bound) 
+void init_prime_list(prime_list *list, const long long int *upper_prime_bound) 
 {
-	// Initialize the array of prime_ints to hold 100 primes at the beginning.
+	// Initialize the array of mpz_t structs to hold INIT_LIST_LENGTH  primes at the beginning.
 	list->capacity = INIT_LIST_LENGTH;
-	list->used = 0;
-	list->values = malloc(sizeof(prime_int) * list->capacity);
+	list->used = 0LL;
+	list->values = malloc(sizeof(mpz_t) * list->capacity);
 	// Ensure that memory allocation succeeded
-	assert(list->values != null);
+	assert(list->values != NULL);
 	
-	prime_int previous_prime, next_prime;
+	mpz_t previous_prime, next_prime, upper_bound;
+
 	// The LL suffix specifies the this literal is a long long. Avoids implicit typecasting.
 	mpz_init_set_ui(previous_prime, 1LL);
 	mpz_init_set_ui(next_prime, 1LL);
+	mpz_init_set_ui(upper_bound, *upper_prime_bound);
 	
-	long long index = 0;
+	long long int index = 0LL;
 	
-	while (current_prime < *upper_prime_bound)
+	// mpz_cmp returns a positive int if next_prime > upper_bound, 0 if =, negative if <
+	while (mpz_cmp(next_prime, upper_bound) < 0)
 	{
 		// Lengthen the list if needed.
 		if (index >= list->capacity)
 			extend_prime_list(list);
 		
 		// Add another prime number to the list.
-		list->values[index] = previous_prime;
+		mpz_init_set(list->values[index], previous_prime);
 		list->used++;
 		index++;
 		
 		// Determine the next prime number greater than the last prime added to the list.
 		mpz_nextprime(next_prime, previous_prime);
-		previous_prime = next_prime;
+		mpz_set(previous_prime, next_prime);
 	}
 	
 	if (list->used < list->capacity)
 		trim_prime_list(list);
+
+	mpz_clear(previous_prime);
+	mpz_clear(next_prime);
+	mpz_clear(upper_bound);
 }
 
-int get_length(const prime_list *list)
+long long int get_prime_list_length(const prime_list *list)
 {
 	return list->used;
 }
 
-const prime_int get_element_at(const prime_list *list, const long long *index)
+mpz_t* get_prime_list_element_at(const prime_list *list, const long long int *index)
 {
 	// Ensure that the index does not exceed the list's boundaries.
-	assert(*index < get_length(list));
-	return list->values[index];
+	assert(*index < get_prime_list_length(list));
+	return &(list->values[*index]);
+}
+
+void clear_prime_list(prime_list *list)
+{
+  // First free the memory taken by every mpz_t integer.
+  for (long long int i = 0LL; i < list->capacity; ++i)
+    mpz_clear(list->values[i]);
+
+  free(list->values);
+  list->used = 0LL;
+  list->capacity = 0LL;
 }
