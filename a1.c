@@ -55,19 +55,25 @@ int main(int argc, char **argv)
    
   /******************** all other tasks do this part ***********************/
   if (rank > FIRST) {
-     int max_diff = 0;
-     /******************** split up array for load balancing ********************/
-     evaluate_length = floor(processors / list_length)
-     if (p_rank < mod(list_len, processors) { evaluate_length += 1; }
-  
-     i_start = p_rank * floor(list_len/processes) + min(p_rank, mod(list_len, processors));
-     for(int i = i_start; i < evaluate_length + i_start; i++) {
-        j = i + 1;
-        diff = diff(list[i], list[j]);
-        if (diff > max_diff)
-           max_diff = diff;
+   /******************** split up array for load balancing ********************/
+	int evaluate_length, list_length, p_rank, processors, i_start, j; 
+   mpz_t max_diff; // TODO initialize to 0
+   mpz_t diff;
+
+	evaluate_length = floor(list_length / processors);
+	if (p_rank < list_length % processors)
+			evaluate_length += 1;
+
+	i_start = (p_rank - 1) * floor(list_length / processors) + ((p_rank < processors) ? (p_rank - 1) : processors);
+	// printf("List length for process %i: %i\n", p_rank, evaluate_length);
+
+	for (int i = i_start; i < evaluate_length + i_start; i++) {
+ 		j = i + 1;
+		diff = subtract_primes(&i, &j);
+		if (diff > max_diff) // TODO translate to a comparison function for mpz_t types
+			mpz_set(max_diff, diff); // TODO test this function 
      }
-     
+    // printf("Max prime difference in process %i starting at index %i: %i\n", p_rank, i_start, max_diff);
      MPI_Finalize();
   }
 
