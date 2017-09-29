@@ -81,6 +81,16 @@ void init_prime_list(prime_list *list, const long long int *upper_prime_bound)
 	mpz_clear(upper_bound);
 }
 
+mpz_t subtract_primes(prime_list *list, const long long int *num1_index, const long long int *num2_index)
+{
+	mpz_t result;
+	mpz_init(result);
+	
+	mpz_sub(result, list->values[*num2_index], list->values[*num1_index]);
+	
+	return result;
+}
+
 void clear_prime_list(prime_list *list)
 {
   // First free the memory taken by every mpz_t integer.
