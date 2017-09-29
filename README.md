@@ -1,3 +1,7 @@
+# Task List #
+
+https://docs.google.com/spreadsheets/d/1MERnOmSumBKxyUmSrmWlG6zMYIu3HFqnJz8bukJK7Ss/edit?usp=sharing
+
 # MPI programming for gaps between prime numbers
 
 CP431,CP631 Parallel Programming, Assignment 1
