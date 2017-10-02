@@ -31,14 +31,14 @@ int main(int argc, char **argv)
   // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
   gmp_printf("Testing get element: %Zd\n", *(get_prime_list_element_at(&list, &index)));
 
-  int rank;
+  int p_rank = 0;
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &processors);
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
-  if (rank == FIRST) {
+  if (p_rank == FIRST) {
      
      // Return largest prime gap from other processors
      
@@ -48,9 +48,9 @@ int main(int argc, char **argv)
   }
    
   /******************** all other tasks do this part ***********************/
-  if (rank > FIRST) {
+  if (p_rank > FIRST) {
     /******************** split up array for load balancing ********************/
-  	int evaluate_length = 0, list_length = 0, p_rank = 0, processors = 0, i_start = 0, j = 0; 
+  	 int evaluate_length = 0, list_length = 0, processors = 0, i_start = 0, j = 0; 
     mpz_t max_diff, diff;
     mpz_init(max_diff);
     mpz_init(diff)
