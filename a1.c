@@ -47,13 +47,18 @@ int main(int argc, char **argv)
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &processors);
    
+  int greatest_index_1 = 0;
+  int greatest_index_2 = 0;
+  char *greatest_prime_gap = "0";
+   
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
+   
   if (p_rank == FIRST) {
      
-     int greatest_index_1 = 0;
-     int greatest_index_2 = 0;
-     char *greatest_prime_gap = "0";
+    int prime1 = 0;
+    int prime2 = 0;
+    char *max_diff_str = NULL;
      
      // Return largest prime gap from other processors
      for (int source = 1; source < processors; source++) { 
@@ -61,9 +66,9 @@ int main(int argc, char **argv)
         int temp_index_2 = 0;
         char *temp_prime_gap;
         
-        MPI_Recv(temp_index_1, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_index_2, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_gap, 1, MPI_CHAR, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(&prime1, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(&prime2, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(max_diff_str, 1, MPI_CHAR, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
         
         if (strcmp(temp_prime_gap, greatest_prime_gap) == 1) {
            greatest_prime_gap = temp_prime_gap;
@@ -84,10 +89,6 @@ int main(int argc, char **argv)
     mpz_t max_diff, diff;
     mpz_init(max_diff);
     mpz_init(diff);
-     
-    int prime1 = 0;
-    int prime2 = 0;
-    char *max_diff_str = NULL;
 
   	evaluate_length = floor(list_length / processors);
   	if (p_rank < list_length % processors)
