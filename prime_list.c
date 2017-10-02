@@ -36,7 +36,7 @@ static void trim_prime_list(prime_list *list)
 
 // Implementations of the prime_list functions specified in prime_list.h.
 
-void init_prime_list(prime_list *list, const long long int *upper_prime_bound) 
+void init_prime_list(prime_list *list, const long long int *problem_size) 
 {
 	// Initialize the array of mpz_t structs to hold INIT_LIST_LENGTH  primes at the beginning.
         list->capacity = malloc(sizeof(long long int));
@@ -47,17 +47,18 @@ void init_prime_list(prime_list *list, const long long int *upper_prime_bound)
 	// Ensure that memory allocation succeeded
 	assert(list->values != NULL);
 	
-	mpz_t previous_prime, next_prime, upper_bound;
+	mpz_t previous_prime, next_prime, max_primes, prime_count;
 
 	// The LL suffix specifies the this literal is a long long. Avoids implicit typecasting.
 	mpz_init_set_ui(previous_prime, 1LL);
 	mpz_init_set_ui(next_prime, 1LL);
-	mpz_init_set_ui(upper_bound, *upper_prime_bound);
+	mpz_init_set_ui(max_primes, *problem_size);
+	mpz_init_set_ui(prime_count, 0LL);
 	
 	long long int index = 0LL;
 	
 	// mpz_cmp returns a positive int if next_prime > upper_bound, 0 if =, negative if <
-	while (mpz_cmp(next_prime, upper_bound) < 0)
+	while (mpz_cmp(prime_count, max_primes) < 0)
 	{
 		// Lengthen the list if needed.
 	        if (index >= *(list->capacity))
@@ -65,6 +66,7 @@ void init_prime_list(prime_list *list, const long long int *upper_prime_bound)
 		
 		// Add another prime number to the list.
 		mpz_init_set(list->values[index], previous_prime);
+		mpz_add_ui(prime_count, prime_count, 1LL);
 		(*(list->used))++;
 		index++;
 		
@@ -79,16 +81,6 @@ void init_prime_list(prime_list *list, const long long int *upper_prime_bound)
 	mpz_clear(previous_prime);
 	mpz_clear(next_prime);
 	mpz_clear(upper_bound);
-}
-
-mpz_t subtract_primes(prime_list *list, const long long int *num1_index, const long long int *num2_index)
-{
-	mpz_t result;
-	mpz_init(result);
-	
-	mpz_sub(result, list->values[*num2_index], list->values[*num1_index]);
-	
-	return result;
 }
 
 void clear_prime_list(prime_list *list)
