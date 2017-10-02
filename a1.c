@@ -25,13 +25,18 @@ int main(int argc, char **argv)
   long long int index = 0LL;
   double start_time, end_time;
   int processors;
+  int i, j;
+  int maxprime, pcsum;
+  double start_time = 0;
+  double end_time
+  int p_rank = 0;
   
   printf("Init prime list\n");
   init_prime_list(&list, &upper_bound);
   // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
   gmp_printf("Testing get element: %Zd\n", *(get_prime_list_element_at(&list, &index)));
 
-  int p_rank = 0;
+  
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &processors);
@@ -43,7 +48,6 @@ int main(int argc, char **argv)
      // Return largest prime gap from other processors
      
      end_time = MPI_Wtime();
-     printf("Done. Largest prime gap is %d Total primes %d\n",maxprime,pcsum);
      printf("Wallclock time elapsed: %.2lf seconds\n",end_time-start_time);
   }
    
@@ -53,14 +57,14 @@ int main(int argc, char **argv)
   	 int evaluate_length = 0, list_length = 0, processors = 0, i_start = 0, j = 0; 
     mpz_t max_diff, diff;
     mpz_init(max_diff);
-    mpz_init(diff)
+    mpz_init(diff);
 
   	evaluate_length = floor(list_length / processors);
   	if (p_rank < list_length % processors)
   			evaluate_length += 1;
 
   	i_start = (p_rank - 1) * floor(list_length / processors) + ((p_rank < processors) ? (p_rank - 1) : processors);
-  	for (int i = i_start; i < evaluate_length + i_start; i++) {
+  	for (i = i_start; i < evaluate_length + i_start; i++) {
    		j = i + 1;
   		diff = subtract_primes(&i, &j);
   		if (mpz_cmp(diff, max_diff))
