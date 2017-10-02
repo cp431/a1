@@ -23,20 +23,21 @@ int main(int argc, char **argv)
   prime_list list;
   long long int upper_bound = 10LL;
   long long int index = 0LL;
+  long long int max_diff = 0LL;
   double start_time, end_time;
   int processors;
   int i, j;
-  int maxprime, pcsum;
   double start_time = 0;
-  double end_time
+  double end_time = 0;
   int p_rank = 0;
+  int tag = MPI_ANY_TAG;
+  MPI_Status = status;
   
   printf("Init prime list\n");
   init_prime_list(&list, &upper_bound);
   // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
   gmp_printf("Testing get element: %Zd\n", *(get_prime_list_element_at(&list, &index)));
 
-  
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &processors);
@@ -44,11 +45,17 @@ int main(int argc, char **argv)
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
   if (p_rank == FIRST) {
+     mpz_t = final;
+     mpz_init(final);
      
      // Return largest prime gap from other processors
+     for (source = 1; source < processors; source++) { 
+        MPI_Recv(&max_diff, 1, MPI_LONG_LONG_INT, source, tag, MPI_COMM_WORLD, &status);
+          mpz_set_ui(final, max_diff);
+     }
      
      end_time = MPI_Wtime();
-     printf("Wallclock time elapsed: %.2lf seconds\n",end_time-start_time);
+     printf("Wallclock time elapsed: %.2lf seconds\n", end_time-start_time);
   }
    
   /******************** all other tasks do this part ***********************/
