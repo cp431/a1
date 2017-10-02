@@ -5,6 +5,7 @@
 */
 #include "prime_list.h"
 #include <stdio.h>
+#include <string.h>
 
 #define FIRST 0
 
@@ -60,12 +61,12 @@ int main(int argc, char **argv)
         int temp_index_2 = 0;
         char *temp_prime_gap;
         
-        MPI_Recv(temp_index1, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_index2, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_index_1, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_index_2, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
         MPI_Recv(temp_prime_gap, 1, MPI_CHAR, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
         
-        if (strcmp(temp_prime, greatest_prime_gap) == 1) {
-           greates_prime_gap = temp_prime_gap;
+        if (strcmp(temp_prime_gap, greatest_prime_gap) == 1) {
+           greatest_prime_gap = temp_prime_gap;
            greatest_index_1 = temp_index_1;
            greatest_index_2 = temp_index_2;
         }
@@ -95,7 +96,7 @@ int main(int argc, char **argv)
   	i_start = (p_rank - 1) * floor(list_length / processors) + ((p_rank < processors) ? (p_rank - 1) : processors);
   	for (i = i_start; i < evaluate_length + i_start; i++) {
    		j = i + 1;
-  		subtract_primes(list[i], list[j], diff);
+  		subtract_primes(&list[i], &list[j], diff);
   		if (mpz_cmp(diff, max_diff) == 1)
   			mpz_set(max_diff, diff);
     }
@@ -104,7 +105,7 @@ int main(int argc, char **argv)
     mpz_get_str(max_diff_str, base, max_diff);
      
     int count = 1;
-    int len = str_len(max_diff_str);
+    int len = strlen(max_diff_str);
     MPI_Send(&prime1, count, MPI_LONG_LONG_INT, destination, PRIME_INDEX_1, MPI_COMM_WORLD);
     MPI_Send(&prime2, count, MPI_LONG_LONG_INT, destination, PRIME_INDEX_2, MPI_COMM_WORLD);
     MPI_Send(max_diff_str, count, MPI_CHAR, destination, PRIME_GAP_STRING, MPI_COMM_WORLD);
