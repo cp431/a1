@@ -48,13 +48,16 @@ inline const long long int* get_prime_list_length(const prime_list *list)
 }
 
 /**
-* Subtracts the two prime numbers at two given indices and returns the result.
+* Subtracts num1 and num2 and stores the result in out_result.
 *
-* @param list pointer to the list of prime numbers.
-* @param num1_index pointer to the index of the first operand.
-* @param num2_index pointer to the index of the second operand.
+* @param num1 pointer to the first operand
+* @param num2 pointer to the second operand
+* @param out_result pointer to the result of the subtraction
 */
-mpz_t subtract_primes(prime_list *list, const long long int *num1_index, const long long int *num2_index);
+inline void subtract_primes(const mpz_t num1, const mpz_t num2, mpz_t out_result)
+{
+	mpz_sub(out_result, num1, num2);
+}
 
 /**
 * Frees all memory taken by the prime list and sets capacity and used back to 0.
