@@ -56,19 +56,19 @@ int main(int argc, char **argv)
    
   if (p_rank == FIRST) {
      
-    int prime1 = 0;
-    int prime2 = 0;
-    char *max_diff_str = NULL;
-     
+    long long int greatest_index_1 = 0;
+    long long int greatest_index_2 = 0;
+    char *greatest_prime_gap = "0";
+  
      // Return largest prime gap from other processors
      for (int source = 1; source < processors; source++) { 
         int temp_index_1 = 0;
         int temp_index_2 = 0;
-        char *temp_prime_gap;
+        char *temp_prime_gap = NULL;
         
-        MPI_Recv(&prime1, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
-        MPI_Recv(&prime2, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
-        MPI_Recv(max_diff_str, 1, MPI_CHAR, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(&temp_index_1, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(&temp_index_2, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_gap, 1, MPI_CHAR, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
         
         if (strcmp(temp_prime_gap, greatest_prime_gap) == 1) {
            greatest_prime_gap = temp_prime_gap;
@@ -87,6 +87,8 @@ int main(int argc, char **argv)
     /******************** split up array for load balancing ********************/
   	 int evaluate_length = 0, list_length = 0, processors = 0, i_start = 0, j = 0;
     mpz_t max_diff, diff;
+    char *max_diff_str = NULL;
+    long long int prime1, prime2;
     mpz_init(max_diff);
     mpz_init(diff);
 
@@ -97,7 +99,7 @@ int main(int argc, char **argv)
   	i_start = (p_rank - 1) * floor(list_length / processors) + ((p_rank < processors) ? (p_rank - 1) : processors);
   	for (i = i_start; i < evaluate_length + i_start; i++) {
    		j = i + 1;
-  		subtract_primes(&list[i], &list[j], diff);
+  		subtract_primes(list.values[i], list.values[j], diff);
   		if (mpz_cmp(diff, max_diff) == 1)
   			mpz_set(max_diff, diff);
     }
