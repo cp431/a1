@@ -20,7 +20,7 @@ extern inline void subtract_primes(const mpz_t num1, const mpz_t num2, mpz_t out
 
 int main(int argc, char **argv) 
 {
-  prime_list test;
+  prime_list list;
   long long int upper_bound = 10LL;
   long long int index = 0LL;
   double start_time, end_time;
@@ -31,7 +31,7 @@ int main(int argc, char **argv)
   // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
   gmp_printf("Testing get element: %Zd\n", *(get_prime_list_element_at(&list, &index)));
 
-  int p_rank;
+  int rank;
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &processors);
