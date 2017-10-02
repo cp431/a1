@@ -17,12 +17,12 @@ typedef struct
 // prime_list functions
 
 /**
-* Initializes a given prime_list to hold every prime number from 1 to upper_prime_bound.
+* Initializes a given prime_list to hold the first problem_size prime numbers.
 *
 * @param list pointer to the list of prime numbers.
 * @param upper_prime_bound the upper bound for prime number generation.
 */
-void init_prime_list(prime_list *list, const long long int *upper_prime_bound);
+void init_prime_list(prime_list *list, const long long int *problem_size);
 
 /**
 * Returns the element at a given index.
