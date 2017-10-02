@@ -50,7 +50,7 @@ int main(int argc, char **argv)
   /******************** all other tasks do this part ***********************/
   if (rank > FIRST) {
     /******************** split up array for load balancing ********************/
-  	int evaluate_length, list_length, p_rank, processors, i_start, j; 
+  	int evaluate_length = 0, list_length = 0, p_rank = 0, processors = 0, i_start = 0, j = 0; 
     mpz_t max_diff, diff;
     mpz_init(max_diff);
     mpz_init(diff)
