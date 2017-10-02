@@ -24,14 +24,13 @@ int main(int argc, char **argv)
   long long int upper_bound = 10LL;
   long long int index = 0LL;
   long long int max_diff = 0LL;
-  double start_time, end_time;
   int processors;
   int i, j;
   double start_time = 0;
   double end_time = 0;
   int p_rank = 0;
   int tag = MPI_ANY_TAG;
-  MPI_Status = status;
+  MPI_Status status;
   
   printf("Init prime list\n");
   init_prime_list(&list, &upper_bound);
@@ -45,11 +44,11 @@ int main(int argc, char **argv)
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
   if (p_rank == FIRST) {
-     mpz_t = final;
+     mpz_t final;
      mpz_init(final);
      
      // Return largest prime gap from other processors
-     for (source = 1; source < processors; source++) { 
+     for (int source = 1; source < processors; source++) { 
         MPI_Recv(&max_diff, 1, MPI_LONG_LONG_INT, source, tag, MPI_COMM_WORLD, &status);
           mpz_set_ui(final, max_diff);
      }
@@ -73,8 +72,8 @@ int main(int argc, char **argv)
   	i_start = (p_rank - 1) * floor(list_length / processors) + ((p_rank < processors) ? (p_rank - 1) : processors);
   	for (i = i_start; i < evaluate_length + i_start; i++) {
    		j = i + 1;
-  		diff = subtract_primes(&i, &j);
-  		if (mpz_cmp(diff, max_diff))
+  		subtract_primes(list[i], list[j], diff);
+  		if (mpz_cmp(diff, max_diff) == 1)
   			mpz_set(max_diff, diff);
     }
 
