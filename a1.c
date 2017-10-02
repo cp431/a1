@@ -29,14 +29,7 @@ int main(int argc, char **argv)
   init_prime_list(&list, &upper_bound);
   // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
   gmp_printf("Testing get element: %Zd\n", *(get_prime_list_element_at(&list, &index)));
-   
-  // Put prime list into centralized memory
-   
-  //printf("Testing get length: %d\n", *(get_prime_list_length(&test)));
-  //printf("Clear prime list\n");
-  //clear_prime_list(&test);
-  printf("Yeeeeeaaaaahhhhh!!!!!!\n");
-   
+
   int p_rank;
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
@@ -55,26 +48,25 @@ int main(int argc, char **argv)
    
   /******************** all other tasks do this part ***********************/
   if (rank > FIRST) {
-   /******************** split up array for load balancing ********************/
-	int evaluate_length, list_length, p_rank, processors, i_start, j; 
-   mpz_t max_diff; // TODO initialize to 0
-   mpz_t diff;
+    /******************** split up array for load balancing ********************/
+  	int evaluate_length, list_length, p_rank, processors, i_start, j; 
+    mpz_t max_diff, diff;
+    mpz_init(max_diff);
+    mpz_init(diff)
 
-	evaluate_length = floor(list_length / processors);
-	if (p_rank < list_length % processors)
-			evaluate_length += 1;
+  	evaluate_length = floor(list_length / processors);
+  	if (p_rank < list_length % processors)
+  			evaluate_length += 1;
 
-	i_start = (p_rank - 1) * floor(list_length / processors) + ((p_rank < processors) ? (p_rank - 1) : processors);
-	// printf("List length for process %i: %i\n", p_rank, evaluate_length);
+  	i_start = (p_rank - 1) * floor(list_length / processors) + ((p_rank < processors) ? (p_rank - 1) : processors);
+  	for (int i = i_start; i < evaluate_length + i_start; i++) {
+   		j = i + 1;
+  		diff = subtract_primes(&i, &j);
+  		if (mpz_cmp(diff, max_diff))
+  			mpz_set(max_diff, diff);
+    }
 
-	for (int i = i_start; i < evaluate_length + i_start; i++) {
- 		j = i + 1;
-		diff = subtract_primes(&i, &j);
-		if (diff > max_diff) // TODO translate to a comparison function for mpz_t types
-			mpz_set(max_diff, diff); // TODO test this function 
-     }
-    // printf("Max prime difference in process %i starting at index %i: %i\n", p_rank, i_start, max_diff);
-     MPI_Finalize();
+    MPI_Finalize();
   }
 
   return 0;
