@@ -80,7 +80,8 @@ void init_prime_list(prime_list *list, const long long int *problem_size)
 
 	mpz_clear(previous_prime);
 	mpz_clear(next_prime);
-	mpz_clear(upper_bound);
+	mpz_clear(max_primes);
+	mpz_clear(prime_count);
 }
 
 void clear_prime_list(prime_list *list)
