@@ -27,7 +27,7 @@ extern inline void subtract_primes(const mpz_t num1, const mpz_t num2, mpz_t out
 int main(int argc, char **argv) 
 {
   
-  long long int upper_bound = 10LL;
+  long long int problem_size = 10LL;
   long long int index = 0LL;
   long long int max_diff = 0LL;
   int processors;
@@ -38,10 +38,8 @@ int main(int argc, char **argv)
   int destination = 0;
   MPI_Status status;
   
-  printf("Init prime list\n");
-  
-  // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
-  gmp_printf("Testing get element: %Zd\n", *(get_prime_list_element_at(&list, &index)));
+   // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
+  // gmp_printf("Testing get element: %Zd\n", *(get_prime_list_element_at(&list, &index)));
 
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
@@ -66,9 +64,9 @@ int main(int argc, char **argv)
         int temp_index_2 = 0;
         char *temp_prime_gap = NULL;
         
-        MPI_Recv(&temp_index_1, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
-        MPI_Recv(&temp_index_2, 1, MPI_LONG_LONG_INT, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_gap, 1, MPI_CHAR, source, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(&temp_index_1, 1, MPI_LONG_LONG_INT, FIRST, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(&temp_index_2, 1, MPI_LONG_LONG_INT, FIRST, PRIME_INDEX_2, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_gap, 1, MPI_CHAR, FIRST, PRIME_GAP_STRING, MPI_COMM_WORLD, &status);
         
         if (strcmp(temp_prime_gap, greatest_prime_gap) == 1) {
            greatest_prime_gap = temp_prime_gap;
@@ -77,7 +75,6 @@ int main(int argc, char **argv)
         }
      printf("Largest gap %s", greatest_prime_gap);
      }
-     
      end_time = MPI_Wtime();
      printf("Wallclock time elapsed: %.2lf seconds\n", end_time - start_time);
   }
@@ -86,7 +83,7 @@ int main(int argc, char **argv)
   if (p_rank > FIRST) {
     prime_list list;
     /******************** split up array for load balancing ********************/
-  	 int list_length = 0, processors = 0, j = 0;
+  	 int list_length = 0, j = 0;
     long long int evaluate_length = 0, i_start = 0;
     mpz_t max_diff, diff;
     char *max_diff_str = NULL;
