@@ -52,9 +52,9 @@ int main(int argc, char **argv)
   start_time = MPI_Wtime();   /* Initialize start time */
    
    prime_list list;
-   init_prime_list(&list, 0LL, problem_size);
+   init_prime_list(&list, 0LL, &problem_size);
    
-   for (long long int i = 0; i < get_prime_list_length(&list); ++i)
+   for (long long int i = 0; i < *(get_prime_list_length(&list)); ++i)
       gmp_printf("%Zd\n", list.values[i]);
    
    clear_prime_list(&list);
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
     char greatest_prime_gap[BUFF];
   
      // Return largest prime gap from other processors
-     for (int source = 1; source < num_processors; source++) { 
+     for (int source = 1; source < num_processors; ++source) { 
 
         MPI_Recv(temp_prime_1, BUFF, MPI_CHAR, MPI_ANY_SOURCE, PRIME1, MPI_COMM_WORLD, &status);
         MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, MPI_ANY_SOURCE, PRIME2, MPI_COMM_WORLD, &status);
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
     
    long long int j, prime1_index, prime2_index; 
    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank);  
-  	for (long long int i = 0; i < evaluate_length; i++) {
+  	for (long long int i = 0; i < evaluate_length; ++i) {
    		j = i + 1;
          
          gmp_printf("Prime 1: %Zd\n", *(get_prime_list_element_at(&list, &i)));
