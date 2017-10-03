@@ -50,6 +50,16 @@ int main(int argc, char **argv)
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
+   
+   prime_list list;
+   init_prime_list(&list, 0LL, problem_size);
+   
+   for (long long int i = 0; i < get_prime_list_length(&list); ++i)
+      gmp_printf("%Zd\n", list.values[i]);
+   
+   clear_prime_list(&list);
+   return 0;
+   
   /* 
   if (p_rank == FIRST) {
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
