@@ -12,8 +12,8 @@
 #define BASE_DECIMAL 10
 
 // MPI Send/Receive Tag Names
-#define PRIME_INDEX_1 0
-#define PRIME_INDEX_2 1
+#define PRIME_STRING_1 0
+#define PRIME_STRING_2 1
 #define PRIME_GAP_STRING 2
 
 #include "mpi.h"
@@ -52,24 +52,24 @@ int main(int argc, char **argv)
    
   if (p_rank == FIRST) {
      printf("Beep Boop! Process %d here, starting my stuff!", p_rank);
-    long long int greatest_index_1 = 0;
-    long long int greatest_index_2 = 0;
+    char *greatest_prime_1 = "0";
+    char *greatest_prime_2 = "0";
     char *greatest_prime_gap = "0";
   
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; source++) { 
-        int temp_index_1 = 0;
-        int temp_index_2 = 0;
+        char *temp_prime_1 = NULL;
+        char *temp_prime_2 = NULL;
         char *temp_prime_gap = NULL;
         
-        MPI_Recv(&temp_index_1, 1, MPI_LONG_LONG_INT, FIRST, PRIME_INDEX_1, MPI_COMM_WORLD, &status);
-        MPI_Recv(&temp_index_2, 1, MPI_LONG_LONG_INT, FIRST, PRIME_INDEX_2, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_gap, 1, MPI_CHAR, FIRST, PRIME_GAP_STRING, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_1, 1, MPI_CHAR, MPI_ANY_SOURCE, PRIME_STRING_1, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_2, 1, MPI_CHAR, MPI_ANY_SOURCE, PRIME_STRING_2, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_gap, 1, MPI_CHAR, MPI_ANY_SOURCE, PRIME_GAP_STRING, MPI_COMM_WORLD, &status);
         
         if (strcmp(temp_prime_gap, greatest_prime_gap) == 1) {
            greatest_prime_gap = temp_prime_gap;
-           greatest_index_1 = temp_index_1;
-           greatest_index_2 = temp_index_2;
+           greatest_prime_1 = temp_prime_1;
+           greatest_prime_2 = temp_prime_2;
         }
      printf("Largest gap %s", greatest_prime_gap);
      }
@@ -122,8 +122,8 @@ int main(int argc, char **argv)
     mpz_clear(diff);
     clear_prime_list(&list); 
                 
-    MPI_Send(&prime1, SINGLE_VARIABLE_MESSAGE, MPI_LONG_LONG_INT, FIRST, PRIME_INDEX_1, MPI_COMM_WORLD);
-    MPI_Send(&prime2, SINGLE_VARIABLE_MESSAGE, MPI_LONG_LONG_INT, FIRST, PRIME_INDEX_2, MPI_COMM_WORLD);
+    MPI_Send(prime1_str, strlen(prime1_str), MPI_CHAR, FIRST, PRIME_STRING_1, MPI_COMM_WORLD);
+    MPI_Send(prime2_str, strlen(prime2_str), MPI_CHAR, FIRST, PRIME_STRING_2, MPI_COMM_WORLD);
     MPI_Send(max_diff_str, strlen(max_diff_str), MPI_CHAR, FIRST, PRIME_GAP_STRING, MPI_COMM_WORLD);
     MPI_Finalize();
   }
