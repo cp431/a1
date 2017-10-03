@@ -74,9 +74,9 @@ int main(int argc, char **argv)
      end_time = MPI_Wtime();
      
      mpz_t largest_gap, prime1, prime2;
-     mpz_init_set_str(largest_gap, temp_prime_gap);
-     mpz_init_set_str(prime1, temp_prime_1);
-     mpz_init_set_str(prime2, temp_prime_2);
+     mpz_init_set_str(largest_gap, temp_prime_gap, BASE_DECIMAL);
+     mpz_init_set_str(prime1, temp_prime_1, BASE_DECIMAL);
+     mpz_init_set_str(prime2, temp_prime_2, BASE_DECIMAL);
      
      gmp_printf("The largest prime gap is: %Zd\n", largest_gap);
      gmp_printf("This gap is realized by the difference between %Zd and %Zd\n", prime1, prime2);
@@ -112,8 +112,8 @@ int main(int argc, char **argv)
   	for (long long int i = 0; i < evaluate_length; i++) {
    		j = i + 1;
          
-         gmp_printf("Prime 1: %Zd\n", *(get_prime_list_element_at(&list, &i));
-         gmp_printf("Prime 2: %Zd\n", *(get_prime_list_element_at(&list, &j));
+         gmp_printf("Prime 1: %Zd\n", *(get_prime_list_element_at(&list, &i)));
+         gmp_printf("Prime 2: %Zd\n", *(get_prime_list_element_at(&list, &j)));
       
   		   subtract_primes(*(get_prime_list_element_at(&list, &i)), *(get_prime_list_element_at(&list, &j)), diff);
   		
