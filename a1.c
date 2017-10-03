@@ -10,7 +10,6 @@
 // Misc Constants
 #define FIRST 0
 #define BASE_DECIMAL 10
-#define SINGLE_VARIABLE_MESSAGE 1
 
 // MPI Send/Receive Tag Names
 #define PRIME_INDEX_1 0
@@ -83,7 +82,8 @@ int main(int argc, char **argv)
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0, i_start = 0;
     char *max_diff_str = NULL;
-    long long int prime1, prime2;
+    char *prime1_str = NULL;
+    char *prime2_str = NULL;
     
     mpz_t max_diff, diff;
     mpz_init(max_diff);
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
    prime_list list;
    init_prime_list(&list, &i_start, &evaluate_length);
     
-   long long int j; 
+   long long int j, prime1_index, prime2_index; 
    printf("Doot Doot! Process %d here, starting to compare primes!", p_rank);  
   	for (long long int i = 0; i < evaluate_length; i++) {
    		j = i + 1;
@@ -109,15 +109,19 @@ int main(int argc, char **argv)
       {
          printf("Boop Beep! Process %d here, found a new maximum!", p_rank);
   			mpz_set(max_diff, diff);
-         prime1 = i;
-         prime2 = j;
+         prime1_index = i;
+         prime2_index = j;
       }
     }
     
     mpz_get_str(max_diff_str, BASE_DECIMAL, max_diff);
+    mpz_get_str(prime1_str, BASE_DECIMAL, *(get_prime_list_element_at(&list, &prime1_index)));
+    mpz_get_str(prime2_str, BASE_DECIMAL, *(get_prime_list_element_at(&list, &prime2_index)));
+       
     mpz_clear(max_diff);
     mpz_clear(diff);
-     
+    clear_prime_list(&list); 
+                
     MPI_Send(&prime1, SINGLE_VARIABLE_MESSAGE, MPI_LONG_LONG_INT, FIRST, PRIME_INDEX_1, MPI_COMM_WORLD);
     MPI_Send(&prime2, SINGLE_VARIABLE_MESSAGE, MPI_LONG_LONG_INT, FIRST, PRIME_INDEX_2, MPI_COMM_WORLD);
     MPI_Send(max_diff_str, strlen(max_diff_str), MPI_CHAR, FIRST, PRIME_GAP_STRING, MPI_COMM_WORLD);
