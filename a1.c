@@ -52,7 +52,7 @@ int main(int argc, char **argv)
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
-     
+     printf("Beep Boop! Process %d here, starting my stuff!", p_rank);
     long long int greatest_index_1 = 0;
     long long int greatest_index_2 = 0;
     char *greatest_prime_gap = "0";
@@ -100,13 +100,18 @@ int main(int argc, char **argv)
    init_prime_list(&list, &i_start, &evaluate_length);
     
    long long int j; 
-     
+   printf("Doot Doot! Process %d here, starting to compare primes!", p_rank);  
   	for (long long int i = 0; i < evaluate_length; i++) {
    		j = i + 1;
   		subtract_primes(*(get_prime_list_element_at(&list, &i)), *(get_prime_list_element_at(&list, &j)), diff);
   		
       if (mpz_cmp(diff, max_diff) == 1)
+      {
+         printf("Boop Beep! Process %d here, found a new maximum!", p_rank);
   			mpz_set(max_diff, diff);
+         prime1 = i;
+         prime2 = j;
+      }
     }
     
     mpz_get_str(max_diff_str, BASE_DECIMAL, max_diff);
