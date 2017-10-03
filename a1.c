@@ -50,7 +50,7 @@ int main(int argc, char **argv)
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
-   
+  /* 
   if (p_rank == FIRST) {
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
     char greatest_prime_1[BUFF];
@@ -88,9 +88,9 @@ int main(int argc, char **argv)
      printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
   }
    
-  /******************** all other tasks do this part ***********************/
+  /******************** all other tasks do this part **********************
   if (p_rank > FIRST) {
-    /******************** split up array for load balancing ********************/
+    /******************** split up array for load balancing *******************
     long long int evaluate_length = 0, i_start = 0;
     
     mpz_t max_diff, diff;
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
     MPI_Send(temp_prime_gap, strlen(temp_prime_gap)+1, MPI_CHAR, FIRST, PRIME_GAP, MPI_COMM_WORLD);
     
   }
-   
+  */
   MPI_Finalize();
   return 0;
 }
