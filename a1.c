@@ -20,7 +20,7 @@
 #include <stdlib.h>
 
 // Must do this in order to call those inline functions in this module, because inline is powerful but weird.
-extern inline mpz_t* get_prime_list_element_at(const prime_list *list, const long long int *index);
+extern inline mpz_t get_prime_list_element_at(const prime_list *list, const long long int *index);
 extern inline const long long int* get_prime_list_length(const prime_list *list);
 extern inline void subtract_primes(const mpz_t num1, const mpz_t num2, mpz_t out_result);
 
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
   	i_start = (p_rank - 1) * floor(list_length / processors) + ((p_rank < processors) ? (p_rank - 1) : processors);
   	for (i = i_start; i < evaluate_length + i_start; i++) {
    		j = i + 1;
-  		subtract_primes(list.values[i], list.values[j], diff);
+  		subtract_primes(get_prime_list_element_at(&list, &i), get_prime_list_element_at(&list, &j), diff);
   		if (mpz_cmp(diff, max_diff) == 1)
   			mpz_set(max_diff, diff);
     }
