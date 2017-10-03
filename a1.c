@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     char *greatest_prime_gap = "0";
   
      // Return largest prime gap from other processors
-     for (int source = 1; source < processors; source++) { 
+     for (int source = 1; source < num_processors; source++) { 
         int temp_index_1 = 0;
         int temp_index_2 = 0;
         char *temp_prime_gap = NULL;
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 
   	evaluate_length = floor(problem_size / num_processors);
   	
-    if (p_rank < list_length % processors)
+    if (p_rank < list_length % num_processors)
   			evaluate_length += 1;
 
   	i_start = p_rank * floor(problem_size / num_processors) + ((p_rank < num_processors) ? (p_rank) : num_processors);
@@ -100,11 +100,11 @@ int main(int argc, char **argv)
    prime_list list;
    init_prime_list(&list, &i_start, &evaluate_length);
     
-   int j; 
+   long long int j; 
      
-  	for (int i = 0; i < evaluate_length; i++) {
+  	for (long long int i = 0; i < evaluate_length; i++) {
    		j = i + 1;
-  		subtract_primes(get_prime_list_element_at(&list, &i), get_prime_list_element_at(&list, &j), diff);
+  		subtract_primes(*(get_prime_list_element_at(&list, &i)), *(get_prime_list_element_at(&list, &j)), diff);
   		
       if (mpz_cmp(diff, max_diff) == 1)
   			mpz_set(max_diff, diff);
