@@ -72,9 +72,9 @@ int main(int argc, char **argv)
      }
      
      end_time = MPI_Wtime();
-     printf("Largest gap %s");
+     printf("Largest gap: ");
      for (int i = 0; i < BUFF; i++)
-       printf("%s", greatest_prime_gap[i]);
+       printf("%c", greatest_prime_gap[i]);
      printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
   }
    
