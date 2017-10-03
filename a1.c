@@ -72,7 +72,7 @@ int main(int argc, char **argv)
      }
      
      end_time = MPI_Wtime();
-     printf("Largest gap %s);
+     printf("Largest gap %s");
      for (int i = 0; i < BUFF; i++)
        printf("%s", greatest_prime_gap[i]);
      printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
@@ -105,7 +105,8 @@ int main(int argc, char **argv)
   		
       if (mpz_cmp(diff, max_diff) == 1)
       {
-         printf("Boop Beep! Process %d here, found a new maximum: %s\n", p_rank, mpz_get_str(diff));
+         printf("Boop Beep! Process %d here, found a new maximum!\n", p_rank);
+         gmp_printf ("New max: %Zd\n", diff);
   			mpz_set(max_diff, diff);
          prime1_index = i;
          prime2_index = j;
