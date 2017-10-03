@@ -65,7 +65,7 @@ void init_prime_list(prime_list *list, const long long int *starting_point, cons
 		{
 			mpz_nextprime(next_prime, previous_prime);
 			mpz_set(previous_prime, next_prime);
-			mpz_add_ui(prime_count, 1LL);
+			mpz_add_ui(prime_count, prime_count, 1LL);
 		}
 		
 		mpz_set_ui(prime_count, 0LL);
