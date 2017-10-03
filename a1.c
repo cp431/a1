@@ -118,9 +118,9 @@ int main(int argc, char **argv)
     mpz_clear(diff);
     clear_prime_list(&list); 
                 
-    MPI_Send(temp_prime_1, strlen(temp_prime_1)+1, MPI_CHAR, FIRST, PRIME_STRING_1, MPI_COMM_WORLD);
-    MPI_Send(temp_prime_2, strlen(temp_prime_2)+1, MPI_CHAR, FIRST, PRIME_STRING_2, MPI_COMM_WORLD);
-    MPI_Send(temp_prime_gap, strlen(temp_prime_gap)+1, MPI_CHAR, FIRST, PRIME_GAP_STRING, MPI_COMM_WORLD);
+    MPI_Send(temp_prime_1, strlen(temp_prime_1)+1, MPI_CHAR, FIRST, PRIME1, MPI_COMM_WORLD);
+    MPI_Send(temp_prime_2, strlen(temp_prime_2)+1, MPI_CHAR, FIRST, PRIME2, MPI_COMM_WORLD);
+    MPI_Send(temp_prime_gap, strlen(temp_prime_gap)+1, MPI_CHAR, FIRST, PRIME_GAP, MPI_COMM_WORLD);
     MPI_Finalize();
   }
 
