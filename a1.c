@@ -12,9 +12,10 @@
 #define BASE_DECIMAL 10
 
 // MPI Send/Receive Tag Names
-#define PRIME_STRING_1 0
-#define PRIME_STRING_2 1
-#define PRIME_GAP_STRING 2
+#define PRIME1 0
+#define PRIME2 1
+#define PRIME_GAP 2
+#define BUFF 1024
 
 #include "mpi.h"
 #include <math.h>
@@ -42,38 +43,36 @@ int main(int argc, char **argv)
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &num_processors);
-   
-  int greatest_index_1 = 0;
-  int greatest_index_2 = 0;
-  char *greatest_prime_gap = "0";
+  
+  char temp_prime_1[BUFF];
+  char temp_prime_2[BUFF];
+  char temp_prime_gap[BUFF];
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
      printf("Beep Boop! Process %d here, starting my stuff!", p_rank);
-    char *greatest_prime_1 = "0";
-    char *greatest_prime_2 = "0";
-    char *greatest_prime_gap = "0";
+    char *greatest_prime_1[BUFF];
+    char *greatest_prime_2[BUFF];
+    char *greatest_prime_gap[BUFF];
   
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; source++) { 
-        char *temp_prime_1 = NULL;
-        char *temp_prime_2 = NULL;
-        char *temp_prime_gap = NULL;
-        
-        MPI_Recv(temp_prime_1, 1, MPI_CHAR, MPI_ANY_SOURCE, PRIME_STRING_1, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_2, 1, MPI_CHAR, MPI_ANY_SOURCE, PRIME_STRING_2, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_gap, 1, MPI_CHAR, MPI_ANY_SOURCE, PRIME_GAP_STRING, MPI_COMM_WORLD, &status);
+
+        MPI_Recv(temp_prime_1, BUFF, MPI_CHAR, MPI_ANY_SOURCE, PRIME1, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, MPI_ANY_SOURCE, PRIME2, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, MPI_ANY_SOURCE, PRIME_GAP, MPI_COMM_WORLD, &status);
         
         if (strcmp(temp_prime_gap, greatest_prime_gap) == 1) {
            greatest_prime_gap = temp_prime_gap;
            greatest_prime_1 = temp_prime_1;
            greatest_prime_2 = temp_prime_2;
         }
-     printf("Largest gap %s", greatest_prime_gap);
      }
+     
      end_time = MPI_Wtime();
+     printf("Largest gap %s\n", greatest_prime_gap);
      printf("Wallclock time elapsed: %.2lf seconds\n", end_time - start_time);
   }
    
@@ -81,17 +80,14 @@ int main(int argc, char **argv)
   if (p_rank > FIRST) {
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0, i_start = 0;
-    char *max_diff_str = NULL;
-    char *prime1_str = NULL;
-    char *prime2_str = NULL;
     
     mpz_t max_diff, diff;
     mpz_init(max_diff);
     mpz_init(diff);
 
   	evaluate_length = floor(problem_size / num_processors);
-  	
-    if (p_rank < problem_size % num_processors)
+     
+   if (p_rank < problem_size % num_processors)
   			evaluate_length += 1;
 
   	i_start = p_rank * floor(problem_size / num_processors) + ((p_rank < num_processors) ? (p_rank) : num_processors);
@@ -122,9 +118,9 @@ int main(int argc, char **argv)
     mpz_clear(diff);
     clear_prime_list(&list); 
                 
-    MPI_Send(prime1_str, strlen(prime1_str), MPI_CHAR, FIRST, PRIME_STRING_1, MPI_COMM_WORLD);
-    MPI_Send(prime2_str, strlen(prime2_str), MPI_CHAR, FIRST, PRIME_STRING_2, MPI_COMM_WORLD);
-    MPI_Send(max_diff_str, strlen(max_diff_str), MPI_CHAR, FIRST, PRIME_GAP_STRING, MPI_COMM_WORLD);
+    MPI_Send(temp_prime_1, strlen(temp_prime_1)+1, MPI_CHAR, FIRST, PRIME_STRING_1, MPI_COMM_WORLD);
+    MPI_Send(temp_prime_2, strlen(temp_prime_2)+1, MPI_CHAR, FIRST, PRIME_STRING_2, MPI_COMM_WORLD);
+    MPI_Send(temp_prime_gap, strlen(temp_prime_gap)+1, MPI_CHAR, FIRST, PRIME_GAP_STRING, MPI_COMM_WORLD);
     MPI_Finalize();
   }
 
