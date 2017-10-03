@@ -61,9 +61,9 @@ int main(int argc, char **argv)
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; ++source) { 
 
-        MPI_Recv(temp_prime_1, BUFF, MPI_CHAR, MPI_ANY_SOURCE, PRIME1, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, MPI_ANY_SOURCE, PRIME2, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, MPI_ANY_SOURCE, PRIME_GAP, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_1, BUFF, MPI_CHAR, source, PRIME1, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, source, PRIME2, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, source, PRIME_GAP, MPI_COMM_WORLD, &status);
         
         if (strcmp(temp_prime_gap, greatest_prime_gap) == 1) {
            strcpy(greatest_prime_gap, temp_prime_gap);
