@@ -26,7 +26,7 @@ extern inline void subtract_primes(const mpz_t num1, const mpz_t num2, mpz_t out
 
 int main(int argc, char **argv) 
 {
-  prime_list list;
+  
   long long int upper_bound = 10LL;
   long long int index = 0LL;
   long long int max_diff = 0LL;
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
   MPI_Status status;
   
   printf("Init prime list\n");
-  init_prime_list(&list, &upper_bound);
+  
   // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
   gmp_printf("Testing get element: %Zd\n", *(get_prime_list_element_at(&list, &index)));
 
@@ -84,8 +84,10 @@ int main(int argc, char **argv)
    
   /******************** all other tasks do this part ***********************/
   if (p_rank > FIRST) {
+    prime_list list;
     /******************** split up array for load balancing ********************/
-  	 int evaluate_length = 0, list_length = 0, processors = 0, i_start = 0, j = 0;
+  	 int list_length = 0, processors = 0, j = 0;
+    long long int evaluate_length = 0, i_start = 0;
     mpz_t max_diff, diff;
     char *max_diff_str = NULL;
     long long int prime1, prime2;
@@ -97,7 +99,9 @@ int main(int argc, char **argv)
   			evaluate_length += 1;
 
   	i_start = (p_rank - 1) * floor(list_length / processors) + ((p_rank < processors) ? (p_rank - 1) : processors);
-  	for (i = i_start; i < evaluate_length + i_start; i++) {
+   init_prime_list(&list, &i_start, &evaluate_length);
+     
+  	for (i = 0; i < evaluate_length; i++) {
    		j = i + 1;
   		subtract_primes(get_prime_list_element_at(&list, &i), get_prime_list_element_at(&list, &j), diff);
   		if (mpz_cmp(diff, max_diff) == 1)
