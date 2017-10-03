@@ -17,7 +17,7 @@
 #define PRIME_GAP 2
 #define BUFF 1024
 
-//#include "mpi.h"
+#include "mpi.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,35 +35,24 @@ int main(int argc, char **argv)
   double start_time = 0.0;
   double end_time = 0.0;
   int p_rank = 0;
-  //MPI_Status status;
+  MPI_Status status;
   
    // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
   // gmp_printf("Testing get element: %Zd\n", *(get_prime_list_element_at(&list, &index)));
 
- // MPI_Init(&argc, &argv);
- // MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
- // MPI_Comm_size(MPI_COMM_WORLD, &num_processors);
+  MPI_Init(&argc, &argv);
+  MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &num_processors);
   
   char temp_prime_1[BUFF];
   char temp_prime_2[BUFF];
   char temp_prime_gap[BUFF];
    
   /******************** task with rank 0 does this part ********************/
-  //start_time = MPI_Wtime();   /* Initialize start time */
+   start_time = MPI_Wtime();   /* Initialize start time */
    long long int start_point = 5LL;
    
-   prime_list list;
-   printf("Initializing prime list\n");
-   init_prime_list(&list, &start_point, &problem_size);
-   printf("Printing prime list\n");
-   for (long long int i = 0; i < *(get_prime_list_length(&list)); ++i)
-      gmp_printf("%Zd\n", list.values[i]);
-   
-   clear_prime_list(&list);
-   return 0;
-   
-  /* 
-  if (p_rank == FIRST) {
+   if (p_rank == FIRST) {
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
     char greatest_prime_1[BUFF];
     char greatest_prime_2[BUFF];
@@ -100,9 +89,9 @@ int main(int argc, char **argv)
      printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
   }
    
-  /******************** all other tasks do this part **********************
+  /******************** all other tasks do this part ***********************/
   if (p_rank > FIRST) {
-    /******************** split up array for load balancing *******************
+    /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0, i_start = 0;
     
     mpz_t max_diff, diff;
@@ -152,7 +141,7 @@ int main(int argc, char **argv)
     MPI_Send(temp_prime_gap, strlen(temp_prime_gap)+1, MPI_CHAR, FIRST, PRIME_GAP, MPI_COMM_WORLD);
     
   }
-  */
-  //MPI_Finalize();
+  
+  MPI_Finalize();
   return 0;
 }
