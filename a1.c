@@ -52,6 +52,7 @@ int main(int argc, char **argv)
   //start_time = MPI_Wtime();   /* Initialize start time */
    
    prime_list list;
+   printf("Initializing prime list\n");
    init_prime_list(&list, 0LL, &problem_size);
    printf("Printing prime list\n");
    for (long long int i = 0; i < *(get_prime_list_length(&list)); ++i)
