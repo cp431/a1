@@ -50,7 +50,7 @@ int main(int argc, char **argv)
    
   /******************** task with rank 0 does this part ********************/
   //start_time = MPI_Wtime();   /* Initialize start time */
-   long long int start_point = 0LL;
+   long long int start_point = 5LL;
    
    prime_list list;
    printf("Initializing prime list\n");
