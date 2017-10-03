@@ -52,7 +52,7 @@ int main(int argc, char **argv)
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
-     printf("Beep Boop! Process %d here, starting my stuff!", p_rank);
+     printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
     char greatest_prime_1[BUFF];
     char greatest_prime_2[BUFF];
     char greatest_prime_gap[BUFF];
@@ -72,8 +72,10 @@ int main(int argc, char **argv)
      }
      
      end_time = MPI_Wtime();
-     printf("Largest gap %s\n", greatest_prime_gap);
-     printf("Wallclock time elapsed: %.2lf seconds\n", end_time - start_time);
+     printf("Largest gap %s);
+     for (int i = 0; i < BUFF; i++)
+       printf("%s", greatest_prime_gap[i]);
+     printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
   }
    
   /******************** all other tasks do this part ***********************/
@@ -96,14 +98,14 @@ int main(int argc, char **argv)
    init_prime_list(&list, &i_start, &evaluate_length);
     
    long long int j, prime1_index, prime2_index; 
-   printf("Doot Doot! Process %d here, starting to compare primes!", p_rank);  
+   printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank);  
   	for (long long int i = 0; i < evaluate_length; i++) {
    		j = i + 1;
   		subtract_primes(*(get_prime_list_element_at(&list, &i)), *(get_prime_list_element_at(&list, &j)), diff);
   		
       if (mpz_cmp(diff, max_diff) == 1)
       {
-         printf("Boop Beep! Process %d here, found a new maximum!", p_rank);
+         printf("Boop Beep! Process %d here, found a new maximum: %s\n", p_rank, mpz_get_str(diff));
   			mpz_set(max_diff, diff);
          prime1_index = i;
          prime2_index = j;
