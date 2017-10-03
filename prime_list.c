@@ -36,7 +36,7 @@ static void trim_prime_list(prime_list *list)
 
 // Implementations of the prime_list functions specified in prime_list.h.
 
-void init_prime_list(prime_list *list, const long long int *problem_size) 
+void init_prime_list(prime_list *list, const long long int *starting_point, const long long int *problem_size) 
 {
 	// Initialize the array of mpz_t structs to hold INIT_LIST_LENGTH  primes at the beginning.
         list->capacity = malloc(sizeof(long long int));
@@ -54,6 +54,23 @@ void init_prime_list(prime_list *list, const long long int *problem_size)
 	mpz_init_set_ui(next_prime, 1LL);
 	mpz_init_set_ui(max_primes, *problem_size);
 	mpz_init_set_ui(prime_count, 0LL);
+	
+	// Fast forward to starting_point if starting_point is > 0LL
+	if (*starting_point > 0LL)
+	{
+		mpz_t start_point;
+		mpz_init_set_ui(start_point, *starting_point);
+		
+		while (mpz_cmp(prime_count, start_point) < 0)
+		{
+			mpz_nextprime(next_prime, previous_prime);
+			mpz_set(previous_prime, next_prime);
+			mpz_add_ui(prime_count, 1LL);
+		}
+		
+		mpz_set_ui(prime_count, 0LL);
+		mpz_clear(start_point);
+	}
 	
 	long long int index = 0LL;
 	
