@@ -59,9 +59,9 @@ void init_prime_list(prime_list *list, const long long int *starting_point, cons
 	if (*starting_point > 0LL)
 	{
 		mpz_t start_point;
-		mpz_init_set_ui(start_point, *starting_point);
+		mpz_init_set_ui(start_point, (*starting_point) - 1LL);
 		
-		while (mpz_cmp(prime_count, start_point - 1) < 0)
+		while (mpz_cmp(prime_count, start_point) < 0)
 		{
 			mpz_nextprime(next_prime, previous_prime);
 			mpz_set(previous_prime, next_prime);
