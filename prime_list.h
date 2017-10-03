@@ -31,9 +31,9 @@ void init_prime_list(prime_list *list, const long long int *problem_size);
 * @param index pointer to the index of the desired list element.
 * @return pointer to the element of list at index.
 */
-inline mpz_t* get_prime_list_element_at(const prime_list *list, const long long int *index)
+inline mpz_t get_prime_list_element_at(const prime_list *list, const long long int *index)
 {
-  return &(list->values[*index]);
+  return list->values[*index];
 }
 
 /**
