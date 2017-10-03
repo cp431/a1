@@ -50,10 +50,11 @@ int main(int argc, char **argv)
    
   /******************** task with rank 0 does this part ********************/
   //start_time = MPI_Wtime();   /* Initialize start time */
+   long long int start_point = 0LL;
    
    prime_list list;
    printf("Initializing prime list\n");
-   init_prime_list(&list, 0LL, &problem_size);
+   init_prime_list(&list, &start_point, &problem_size);
    printf("Printing prime list\n");
    for (long long int i = 0; i < *(get_prime_list_length(&list)); ++i)
       gmp_printf("%Zd\n", list.values[i]);
