@@ -7,7 +7,10 @@
 #include <stdio.h>
 #include <string.h>
 
+// Misc Constants
 #define FIRST 0
+#define BASE_DECIMAL 10
+#define SINGLE_VARIABLE_MESSAGE 1
 
 // MPI Send/Receive Tag Names
 #define PRIME_INDEX_1 0
@@ -28,14 +31,10 @@ int main(int argc, char **argv)
 {
   
   long long int problem_size = 10LL;
-  long long int index = 0LL;
-  long long int max_diff = 0LL;
-  int processors;
-  int i, j;
-  double start_time = 0;
-  double end_time = 0;
+  int num_processors = 0;
+  double start_time = 0.0;
+  double end_time = 0.0;
   int p_rank = 0;
-  int destination = 0;
   MPI_Status status;
   
    // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
@@ -43,7 +42,7 @@ int main(int argc, char **argv)
 
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
-  MPI_Comm_size(MPI_COMM_WORLD, &processors);
+  MPI_Comm_size(MPI_COMM_WORLD, &num_processors);
    
   int greatest_index_1 = 0;
   int greatest_index_2 = 0;
@@ -83,36 +82,41 @@ int main(int argc, char **argv)
   if (p_rank > FIRST) {
     prime_list list;
     /******************** split up array for load balancing ********************/
-  	 int list_length = 0, j = 0;
     long long int evaluate_length = 0, i_start = 0;
-    mpz_t max_diff, diff;
     char *max_diff_str = NULL;
     long long int prime1, prime2;
+    
+    mpz_t max_diff, diff;
     mpz_init(max_diff);
     mpz_init(diff);
 
-  	evaluate_length = floor(list_length / processors);
-  	if (p_rank < list_length % processors)
+  	evaluate_length = floor(problem_size / num_processors);
+  	
+    if (p_rank < list_length % processors)
   			evaluate_length += 1;
 
-  	i_start = (p_rank - 1) * floor(list_length / processors) + ((p_rank < processors) ? (p_rank - 1) : processors);
+  	i_start = p_rank * floor(problem_size / num_processors) + ((p_rank < num_processors) ? (p_rank) : num_processors);
+   
+   prime_list list;
    init_prime_list(&list, &i_start, &evaluate_length);
+    
+   int j; 
      
-  	for (i = 0; i < evaluate_length; i++) {
+  	for (int i = 0; i < evaluate_length; i++) {
    		j = i + 1;
   		subtract_primes(get_prime_list_element_at(&list, &i), get_prime_list_element_at(&list, &j), diff);
-  		if (mpz_cmp(diff, max_diff) == 1)
+  		
+      if (mpz_cmp(diff, max_diff) == 1)
   			mpz_set(max_diff, diff);
     }
     
-    int base = 10;
-    mpz_get_str(max_diff_str, base, max_diff);
+    mpz_get_str(max_diff_str, BASE_DECIMAL, max_diff);
+    mpz_clear(max_diff);
+    mpz_clear(diff);
      
-    int count = 1;
-    int len = strlen(max_diff_str);
-    MPI_Send(&prime1, count, MPI_LONG_LONG_INT, destination, PRIME_INDEX_1, MPI_COMM_WORLD);
-    MPI_Send(&prime2, count, MPI_LONG_LONG_INT, destination, PRIME_INDEX_2, MPI_COMM_WORLD);
-    MPI_Send(max_diff_str, count, MPI_CHAR, destination, PRIME_GAP_STRING, MPI_COMM_WORLD);
+    MPI_Send(&prime1, SINGLE_VARIABLE_MESSAGE, MPI_LONG_LONG_INT, FIRST, PRIME_INDEX_1, MPI_COMM_WORLD);
+    MPI_Send(&prime2, SINGLE_VARIABLE_MESSAGE, MPI_LONG_LONG_INT, FIRST, PRIME_INDEX_2, MPI_COMM_WORLD);
+    MPI_Send(max_diff_str, strlen(max_diff_str), MPI_CHAR, FIRST, PRIME_GAP_STRING, MPI_COMM_WORLD);
     MPI_Finalize();
   }
 
