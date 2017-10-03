@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 
   	evaluate_length = floor(problem_size / num_processors);
   	
-    if (p_rank < list_length % num_processors)
+    if (p_rank < problem_size % num_processors)
   			evaluate_length += 1;
 
   	i_start = p_rank * floor(problem_size / num_processors) + ((p_rank < num_processors) ? (p_rank) : num_processors);
