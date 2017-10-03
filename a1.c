@@ -53,9 +53,9 @@ int main(int argc, char **argv)
    
   if (p_rank == FIRST) {
      printf("Beep Boop! Process %d here, starting my stuff!", p_rank);
-    char *greatest_prime_1[BUFF];
-    char *greatest_prime_2[BUFF];
-    char *greatest_prime_gap[BUFF];
+    char greatest_prime_1[BUFF];
+    char greatest_prime_2[BUFF];
+    char greatest_prime_gap[BUFF];
   
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; source++) { 
@@ -65,9 +65,9 @@ int main(int argc, char **argv)
         MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, MPI_ANY_SOURCE, PRIME_GAP, MPI_COMM_WORLD, &status);
         
         if (strcmp(temp_prime_gap, greatest_prime_gap) == 1) {
-           greatest_prime_gap = temp_prime_gap;
-           greatest_prime_1 = temp_prime_1;
-           greatest_prime_2 = temp_prime_2;
+           strcpy(greatest_prime_gap, temp_prime_gap);
+           strcpy(greatest_prime_1, temp_prime_1);
+           strcpy(greatest_prime_2, temp_prime_2);
         }
      }
      
@@ -110,9 +110,9 @@ int main(int argc, char **argv)
       }
     }
     
-    mpz_get_str(max_diff_str, BASE_DECIMAL, max_diff);
-    mpz_get_str(prime1_str, BASE_DECIMAL, *(get_prime_list_element_at(&list, &prime1_index)));
-    mpz_get_str(prime2_str, BASE_DECIMAL, *(get_prime_list_element_at(&list, &prime2_index)));
+    mpz_get_str(temp_prime_1, BASE_DECIMAL, max_diff);
+    mpz_get_str(temp_prime_2, BASE_DECIMAL, *(get_prime_list_element_at(&list, &prime1_index)));
+    mpz_get_str(temp_prime_gap, BASE_DECIMAL, *(get_prime_list_element_at(&list, &prime2_index)));
        
     mpz_clear(max_diff);
     mpz_clear(diff);
