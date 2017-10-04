@@ -99,7 +99,7 @@ int main(int argc, char **argv)
     long long int evaluate_length = 0, i_start = 0;
     
     mpz_t max_diff, diff;
-    mpz_init(max_diff);
+    mpz_init_set_ui(max_diff, 0LL);
     mpz_init(diff);
 
   	evaluate_length = floor(problem_size / num_processors);
@@ -122,7 +122,7 @@ int main(int argc, char **argv)
       
   		   subtract_primes(*(get_prime_list_element_at(&list, &i)), *(get_prime_list_element_at(&list, &j)), diff);
   		
-         if (mpz_cmp(diff, max_diff) == 1)
+         if (mpz_cmp(diff, max_diff) > 0LL)
          {
             printf("Boop Beep! Process %d here, found a new maximum!\n", p_rank);
             gmp_printf ("New max: %Zd\n", diff);
