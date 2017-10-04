@@ -53,7 +53,7 @@ int main(int argc, char **argv)
    long long int start_point = 5LL;
    
    if (p_rank == FIRST) {
-     printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
+    printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
     mpz_t greatest_prime_1;
     mpz_t greatest_prime_2;
     mpz_t greatest_prime_gap;
@@ -71,6 +71,10 @@ int main(int argc, char **argv)
         MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, source, PRIME2, MPI_COMM_WORLD, &status);
         MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, source, PRIME_GAP, MPI_COMM_WORLD, &status);
         
+        printf("temp_prime_gap_mpz @ process %d: %Zd", source, temp_prime_gap_mpz);
+        printf("greatest_prime_1 @ process %d: %Zd", source, greatest_prime_1);
+        printf("greatest_prime_2 @ process %d: %Zd", source, greatest_prime_2);
+        
         mpz_set_str(temp_prime_gap_mpz, temp_prime_gap, BASE_DECIMAL);
         
         if (mpz_cmp(temp_prime_gap_mpz, greatest_prime_gap) > 0LL) {
@@ -79,18 +83,11 @@ int main(int argc, char **argv)
            mpz_set_str(greatest_prime_2, temp_prime_2, BASE_DECIMAL);
         }
      }
-     
-     end_time = MPI_Wtime();
-     
-     gmp_printf("The largest prime gap is: %Zd\n", greatest_prime_gap);
-     gmp_printf("This gap is realized by the difference between %Zd and %Zd\n", greatest_prime_1, greatest_prime_2);
-     
+   
      mpz_clear(greatest_prime_gap);
      mpz_clear(greatest_prime_1);
      mpz_clear(greatest_prime_2);
      mpz_clear(temp_prime_gap_mpz);
-     
-     printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
   }
    
   /******************** all other tasks do this part ***********************/
@@ -111,6 +108,12 @@ int main(int argc, char **argv)
    
    prime_list list;
    init_prime_list(&list, &i_start, &evaluate_length);
+     
+   // testing prime list
+   printf("Printing prime list for process %d\n", p_rank);
+   for (int i = 0; i < evaluate_length; i++) {
+      printf("%Zd", list[i]);
+   }
     
    long long int j, prime1_index, prime2_index; 
    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank);  
@@ -139,11 +142,22 @@ int main(int argc, char **argv)
     mpz_clear(max_diff);
     mpz_clear(diff);
     clear_prime_list(&list); 
+   
+    printf("temp_prime_gap @ process %d: %s", p_rank, temp_prime_gap);
+    printf("temp_prime_1 @ process %d: %s", p_rank, temp_prime_1);
+    printf("temp_prime_2 @ process %d: %s", p_rank, temp_prime_2);
                 
     MPI_Send(temp_prime_1, strlen(temp_prime_1)+1, MPI_CHAR, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(temp_prime_2, strlen(temp_prime_2)+1, MPI_CHAR, FIRST, PRIME2, MPI_COMM_WORLD);
     MPI_Send(temp_prime_gap, strlen(temp_prime_gap)+1, MPI_CHAR, FIRST, PRIME_GAP, MPI_COMM_WORLD);
     
+  }
+   
+  if (my_rank == 0) {
+     end_time = MPI_Wtime();
+     printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
+     gmp_printf("The largest prime gap is: %Zd\n", greatest_prime_gap);
+     gmp_printf("This gap is realized by the difference between %Zd and %Zd\n", greatest_prime_1, greatest_prime_2);
   }
   
   MPI_Finalize();
