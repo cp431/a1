@@ -54,10 +54,16 @@ int main(int argc, char **argv)
    
    if (p_rank == FIRST) {
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
-    char greatest_prime_1[BUFF];
-    char greatest_prime_2[BUFF];
-    char greatest_prime_gap[BUFF];
-  
+    mpz_t greatest_prime_1;
+    mpz_t greatest_prime_2;
+    mpz_t greatest_prime_gap;
+    mpz_t temp_prime_gap_mpz;
+      
+    mpz_init_set_ui(greatest_prime_gap, 0LL);
+    mpz_init(temp_prime_gap_mpz);
+    mpz_init(greatest_prime_1);
+    mpz_init(greatest_prime_2);
+      
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; ++source) { 
 
@@ -65,26 +71,24 @@ int main(int argc, char **argv)
         MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, source, PRIME2, MPI_COMM_WORLD, &status);
         MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, source, PRIME_GAP, MPI_COMM_WORLD, &status);
         
-        if (strcmp(temp_prime_gap, greatest_prime_gap) == 1) {
-           strcpy(greatest_prime_gap, temp_prime_gap);
-           strcpy(greatest_prime_1, temp_prime_1);
-           strcpy(greatest_prime_2, temp_prime_2);
+        mpz_set_str(temp_prime_gap_mpz, temp_prime_gap, BASE_DECIMAL);
+        
+        if (mpz_cmp(temp_prime_gap_mpz, greatest_prime_gap) > 0LL) {
+           mpz_set(greatest_prime_gap, temp_prime_gap_mpz);
+           mpz_set_str(greatest_prime_1, temp_prime_1, BASE_DECIMAL);
+           mpz_set_str(greatest_prime_2, temp_prime_2, BASE_DECIMAL);
         }
      }
      
      end_time = MPI_Wtime();
      
-     mpz_t largest_gap, prime1, prime2;
-     mpz_init_set_str(largest_gap, temp_prime_gap, BASE_DECIMAL);
-     mpz_init_set_str(prime1, temp_prime_1, BASE_DECIMAL);
-     mpz_init_set_str(prime2, temp_prime_2, BASE_DECIMAL);
-     
      gmp_printf("The largest prime gap is: %Zd\n", largest_gap);
-     gmp_printf("This gap is realized by the difference between %Zd and %Zd\n", prime1, prime2);
+     gmp_printf("This gap is realized by the difference between %Zd and %Zd\n", greatest_prime_1, greatest_prime_2);
      
-     mpz_clear(largest_gap);
-     mpz_clear(prime1);
-     mpz_clear(prime2);
+     mpz_clear(greatest_prime_gap);
+     mpz_clear(greatest_prime_1);
+     mpz_clear(greatest_prime_2);
+     mpz_clear(temp_prime_gap_mpz);
      
      printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
   }
