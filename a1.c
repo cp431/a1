@@ -82,7 +82,7 @@ int main(int argc, char **argv)
      
      end_time = MPI_Wtime();
      
-     gmp_printf("The largest prime gap is: %Zd\n", largest_gap);
+     gmp_printf("The largest prime gap is: %Zd\n", greatest_prime_gap);
      gmp_printf("This gap is realized by the difference between %Zd and %Zd\n", greatest_prime_1, greatest_prime_2);
      
      mpz_clear(greatest_prime_gap);
