@@ -7,7 +7,7 @@
 void init_prime_list(long long int *list, const long long int *problem_size) 
 {
 	mpz_t previous_prime, next_prime, temp;
-	long long int prime = 0LL;
+	long int prime = 0L;
 
 	// The LL suffix specifies the this literal is a long long. Avoids implicit typecasting.
 	mpz_init_set_si(previous_prime, 3);
@@ -21,7 +21,7 @@ void init_prime_list(long long int *list, const long long int *problem_size)
 		mpz_set(temp, previous_prime);
 		gmp_printf("Prime %lld: %Zd\n", prime_count, temp);
 		prime = mpz_get_si(temp);
-		printf("%s\n", prime);
+		printf("%ld\n", prime);
 		//printf("Prime %lld: %lld", prime_count, prime);
 		list[prime_count] = prime;
 		
