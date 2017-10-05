@@ -46,13 +46,13 @@ int main(int argc, char **argv)
   long long int greatest_prime_2 = 0LL;
   long long int greatest_prime_gap = 0LL;
    
-  int long long *primes = malloc(sizeof(long long int) * problem_size);
-   
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
+     
+     int long long *primes = malloc(sizeof(long long int) * problem_size);
      
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
      printf("Initializing list...\n");
@@ -77,7 +77,9 @@ int main(int argc, char **argv)
     MPI_Barrier(MPI_COMM_WORLD);
    
     if (p_rank > FIRST) {
-       MPI_Recv(primes, COUNT, MPI_INT, FIRST, 0, MPI_COMM_WORLD, &status);
+       int *primes;
+       MPI_Recv(temp_primes, COUNT, MPI_INT, FIRST, 0, MPI_COMM_WORLD, &status);
+       primes = temp_primes;
        printf("Process %d got primes!\n", p_rank);
        printf("PRIME ADDRESS ON REC: %p\n",(void*)&primes);
     }
