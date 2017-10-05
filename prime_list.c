@@ -37,7 +37,7 @@ void init_prime_list(long long int *list, const long long int *problem_size)
 		// Determine the next prime number greater than the last prime added to the list.
 		mpz_nextprime(next_prime, previous_prime);
 		mpz_set(previous_prime, next_prime);
-	//}
+	}
 
 	mpz_clear(previous_prime);
 	mpz_clear(next_prime);
