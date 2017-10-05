@@ -73,8 +73,8 @@ int main(int argc, char **argv)
    
     MPI_Barrier(MPI_COMM_WORLD);
 
-    MPI_Scatter(root_primes, 1, MPI_LONG_LONG_INT,
-        primes, 1, MPI_LONG_LONG_INT, FIRST,
+    MPI_Scatter(root_primes, 10, MPI_LONG_LONG_INT,
+        primes, 10, MPI_LONG_LONG_INT, FIRST,
         MPI_COMM_WORLD);
        
     /******************** split up array for load balancing ********************/
