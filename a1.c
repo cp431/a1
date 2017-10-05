@@ -26,7 +26,7 @@
 int main(int argc, char **argv) 
 {
    
-  long long int problem_size = 10;
+  long long int problem_size = 10LL;
   int num_processors = 0;
   double start_time = 0.0;
   double end_time = 0.0;
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
   long long int greatest_prime_2;
   long long int greatest_prime_gap;
    
-  long long int primes[problem_size];
+  long long int primes[problem_size] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
@@ -106,7 +106,8 @@ int main(int argc, char **argv)
       
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
       
-     init_prime_list(primes, &problem_size);
+     //init_prime_list(primes, &problem_size);
+      
 
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; ++source) { 
