@@ -39,13 +39,13 @@ int main(int argc, char **argv)
   MPI_Comm_size(MPI_COMM_WORLD, &num_processors);
   num_processors--;
   
-  long long int temp_prime_1;
-  long long int temp_prime_2;
-  long long int temp_prime_gap;
+  long long int temp_prime_1 = 0LL;
+  long long int temp_prime_2 = 0LL;
+  long long int temp_prime_gap = 0LL;
 
-  long long int greatest_prime_1;
-  long long int greatest_prime_2;
-  long long int greatest_prime_gap;
+  long long int greatest_prime_1 = 0LL;
+  long long int greatest_prime_2 = 0LL;
+  long long int greatest_prime_gap = 0LL;
    
   int long long primes[problem_size];
    
