@@ -151,15 +151,17 @@ int main(int argc, char **argv)
         }
      }
    
-     mpz_clear(greatest_prime_gap);
-     mpz_clear(greatest_prime_1);
-     mpz_clear(greatest_prime_2);
-     mpz_clear(temp_prime_gap_mpz);
+
       
      end_time = MPI_Wtime();
      printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
      gmp_printf("The largest prime gap is: %Zd\n", greatest_prime_gap);
      gmp_printf("This gap is realized by the difference between %Zd and %Zd\n", greatest_prime_1, greatest_prime_2);
+      
+     mpz_clear(greatest_prime_gap);
+     mpz_clear(greatest_prime_1);
+     mpz_clear(greatest_prime_2);
+     mpz_clear(temp_prime_gap_mpz);
   }
    
   
