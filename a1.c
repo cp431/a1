@@ -3,10 +3,17 @@
    ====
    This program will eventually do things.
 */
+
+#include "mpi.h"
 #include "prime_list.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
+
+#ifndef MIN
+#define MIN(a,b) (((a) < (b)) ? (a) : (b))
+#endif
 
 // Misc Constants
 #define FIRST 0
@@ -19,10 +26,7 @@
 #define BUFF 1024
 #define COUNT 1
 
-#include "mpi.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+
 
 int main(int argc, char **argv) 
 {
