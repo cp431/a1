@@ -11,7 +11,7 @@
 * @param list pointer to the list of prime numbers.
 * @param problem_size the amount of prime numbers to generate.
 */
-void init_prime_list(long long int **list, const long long int *problem_size);
+void init_prime_list(long long int *list, const long long int *problem_size);
 
 /**
 * Frees all memory taken by the prime list and sets capacity and used back to 0.
