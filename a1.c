@@ -26,12 +26,9 @@
 #define BUFF 1024
 #define COUNT 1
 
-
-
-int main(int argc, char **argv) 
-{
-  if (argc < 2)
-  {
+int main(int argc, char **argv) {
+  
+   if (argc < 2) {
      printf("ERROR: Missing problem size. Please specify on the command line.\n");
      return -1;
   }
@@ -55,26 +52,12 @@ int main(int argc, char **argv)
   long long int greatest_prime_1 = 0LL;
   long long int greatest_prime_2 = 0LL;
   long long int greatest_prime_gap = 0LL;
-  
-  long long int *primes = calloc(problem_size, sizeof(long long int));
    
   /******************** task with rank 0 does this part ********************/
+   
   start_time = MPI_Wtime();   /* Initialize start time */
    
-  if (p_rank == FIRST) {
-//       printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
-      printf("Initializing list...\n");
-       init_prime_list(primes, &problem_size);
-      printf("Initializing list complete!\n");
-//       // testing prime list
-//       printf("Printing prime list for process %d\n", p_rank);
-//       for (int i = 0; i < problem_size; i++) {
-//          printf("%lld ", primes[i]);
-//       }
-//       printf("\n");
-    }
-
-   /******************** all tasks do this part ***********************/
+  /******************** all tasks do this part ***********************/
    
     MPI_Barrier(MPI_COMM_WORLD);
    
@@ -112,35 +95,47 @@ int main(int argc, char **argv)
 //      printf("\n");
     
    long long int j = 0LL, prime1_index = 0LL, prime2_index = 0LL; 
+   
+   mpz_t previous_prime, next_prime, diff, max_diff, prime1, prime2;
+   mpz_init_set_si(previous_prime, i_start);
+	mpz_init_set_si(next_prime, i_start);
+   mpz_init(diff);
+   mpz_init(max_diff);
+   mpz_init(prime1);
+   mpz_init(prime2);
+   mpz_nextprime(next_prime, previous_prime);
+   
 //    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
   	for (long long int i = i_start; i < i_start + evaluate_length - 1; ++i) {
-   		
-         j = i + 1;
-  		   diff = primes[j] - primes[i];
+       
+         mpz_nextprime(next_prime, previous_prime);
+  		   mpz_sub(diff, next_prime, previous_prime);
+      
 //          printf("Prime 1 at index %lld: %lld\n", i, primes[i]);
 //          printf("Prime 2 at index %lld: %lld\n", j, primes[j]);
 //          printf("Difference: %lld\n", diff);
   		
-         if (diff > max_diff) {
-            max_diff = diff;
-            prime1_index = i;
-            prime2_index = j;
+         if (mpz_cmp(diff, max_diff) == 1) {
+            mpz_set(max_diff, diff);
+            mpz_set(prime1, previous_prime);
+            mpz_set(prime2, next_prime);
          }
+      mpz_set(previous_prime, next_prime);
     }
    
-    temp_prime_1 = primes[prime1_index];
-    temp_prime_2 = primes[prime2_index];
-    temp_prime_gap = max_diff;
+    mpz_export(&temp_prime_1, 0, -1, sizeof(long long int), 0, 0, previous_prime);
+    mpz_export(&temp_prime_2, 0, -1, sizeof(long long int), 0, 0, next_prime);
+    mpz_export(&temp_prime_gap, 0, -1, sizeof(long long int), 0, 0, max_diff);
                 
     MPI_Send(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME_GAP, MPI_COMM_WORLD);
    
-   MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD);
    
-   if (p_rank == FIRST) {
+    if (p_rank == FIRST) {
            // Return largest prime gap from other processors
-     for (int source = 0; source < num_processors; ++source) { 
+        for (int source = 0; source < num_processors; ++source) { 
 
         MPI_Recv(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, source, PRIME1, MPI_COMM_WORLD, &status);
         MPI_Recv(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, source, PRIME2, MPI_COMM_WORLD, &status);
