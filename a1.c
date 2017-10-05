@@ -84,11 +84,11 @@ int main(int argc, char **argv) {
    mpz_init(prime1);
    mpz_init(prime2);
    mpz_nextprime(next_prime, previous_prime);
-   mpz_set(previous_prime, next_prime);
    
 //    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
    for (long long int i = i_start; i < i_start + evaluate_length - 1; ++i) {
-	   
+	 
+	 mpz_set(previous_prime, next_prime);
 	 printf("i_start: %lld\n", i_start);
        
          mpz_nextprime(next_prime, previous_prime);
@@ -103,7 +103,6 @@ int main(int argc, char **argv) {
             mpz_set(prime1, previous_prime);
             mpz_set(prime2, next_prime);
          }
-      mpz_set(previous_prime, next_prime);
     }
    
     mpz_export(&temp_prime_1, 0, -1, sizeof(long long int), 0, 0, previous_prime);
