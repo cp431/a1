@@ -140,7 +140,7 @@ int main(int argc, char **argv)
    
    if (p_rank == FIRST) {
            // Return largest prime gap from other processors
-     for (int source = 1; source < num_processors; ++source) { 
+     for (int source = 0; source < num_processors; ++source) { 
 
         MPI_Recv(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, source, PRIME1, MPI_COMM_WORLD, &status);
         MPI_Recv(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, source, PRIME2, MPI_COMM_WORLD, &status);
