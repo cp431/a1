@@ -91,8 +91,9 @@ int main(int argc, char **argv)
   }
    
   /******************** all other tasks do this part ***********************/
-  if (p_rank > FIRST) {
+  //if (p_rank > FIRST) {
      
+    MPI_Barrier(MPI_COMM_WORLD)
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0LL, i_start = 0LL, max_diff = 0LL, diff = 0LL;
 
@@ -138,7 +139,7 @@ int main(int argc, char **argv)
     MPI_Send(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME_GAP, MPI_COMM_WORLD);
-  }
+  //}
    
   
   MPI_Finalize();
