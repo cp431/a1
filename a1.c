@@ -47,22 +47,24 @@ int main(int argc, char **argv)
   char temp_prime_1[BUFF];
   char temp_prime_2[BUFF];
   char temp_prime_gap[BUFF];
+  
+  mpz_t temp_prime_gap_mpz;
+  mpz_t greatest_prime_1;
+  mpz_t greatest_prime_2;
+  mpz_t greatest_prime_gap;
+   
+  mpz_init(temp_prime_gap_mpz);
+  mpz_init(greatest_prime_1);
+  mpz_init(greatest_prime_2);
    
   /******************** task with rank 0 does this part ********************/
    start_time = MPI_Wtime();   /* Initialize start time */
    long long int start_point = 5LL;
    
    if (p_rank == FIRST) {
-    printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
-    mpz_t greatest_prime_1;
-    mpz_t greatest_prime_2;
-    mpz_t greatest_prime_gap;
-    mpz_t temp_prime_gap_mpz;
-      
-    mpz_init_set_ui(greatest_prime_gap, 0LL);
-    mpz_init(temp_prime_gap_mpz);
-    mpz_init(greatest_prime_1);
-    mpz_init(greatest_prime_2);
+     printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
+    
+      mpz_init_set_ui(greatest_prime_gap, 0LL);
       
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; ++source) { 
@@ -112,7 +114,7 @@ int main(int argc, char **argv)
    // testing prime list
    printf("Printing prime list for process %d\n", p_rank);
    for (int i = 0; i < evaluate_length; i++) {
-      printf("%Zd", list[i]);
+      printf("%Zd", &list[i]);
    }
     
    long long int j, prime1_index, prime2_index; 
@@ -153,7 +155,7 @@ int main(int argc, char **argv)
     
   }
    
-  if (my_rank == 0) {
+  if (p_rank == 0) {
      end_time = MPI_Wtime();
      printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
      gmp_printf("The largest prime gap is: %Zd\n", greatest_prime_gap);
