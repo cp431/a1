@@ -77,7 +77,7 @@ int main(int argc, char **argv)
     if (p_rank < problem_size % num_processors)
   			evaluate_length += 1;
 
-  	 i_start = p_rank * floor(problem_size / num_processors) + ((p_rank < num_processors) ? p_rank : num_processors) - 1;
+  	 i_start = p_rank * floor(problem_size / num_processors) + ((p_rank < num_processors) ? p_rank : num_processors);
    
     printf("i_start for process %d: %lld\n", p_rank, i_start);
      
@@ -90,11 +90,11 @@ int main(int argc, char **argv)
     
    long long int j = 0LL, prime1_index = 0LL, prime2_index = 0LL; 
    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank);  
-  	for (long long int i = 0LL; i < evaluate_length - 1LL; ++i) {
+  	for (long long int i = i_start; i < i_start + evaluate_length; ++i) {
    		j = i + 1;
          
-         printf("Prime 1: %lld\n", primes[i]);
-         printf("Prime 2: %lld\n", primes[j]);
+         printf("Prime 1 at index %lld: %lld\n", i, primes[i]);
+         printf("Prime 2 at index %lld: %lld\n", j, primes[j]);
       
   		   diff = primes[j] - primes[i];
          printf("Difference: %lld\n", diff);
