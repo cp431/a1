@@ -48,11 +48,13 @@ int main(int argc, char **argv)
    
   int long long primes[problem_size];
    
+  
+   
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
-      
+     
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
      printf("Initializing list...\n");
      init_prime_list(primes, &problem_size);
@@ -63,12 +65,22 @@ int main(int argc, char **argv)
         printf("%lld ", primes[i]);
      }
      printf("\n");
+     
+     for (int dest = 1; dest < num_processors; dest++) {
+       MPI_Send(&primes, COUNT, MPI_INT, dest, MPI_ANY_TAG, MPI_COMM_WORLD);
+     }
+     
   }
    
   /******************** all other tasks do this part ***********************/
   //if (p_rank > FIRST) {
      
     MPI_Barrier(MPI_COMM_WORLD);
+   
+    if (p_rank > FIRST) {
+       MPI_Recv(&primes, COUNT, MPI_INT, FIRST, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+    }
+       
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0LL, i_start = 0LL, max_diff = 0LL, diff = 0LL;
 
