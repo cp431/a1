@@ -24,9 +24,8 @@ void init_prime_list(long long int *list, const long long int *problem_size)
 		//printf("%ld\n", prime);
 		//printf("Prime %lld: %lld", prime_count, prime);
 		
-	long long int i = 3, c;
-	list[0] = 2LL;
-	for (long long int count = 2; count < *problem_size; ) {
+	long long int i = 2, c;
+	for (long long int count = 1; count <= *problem_size; ) {
 	   for (c = 2 ; c <= i - 1 ; c++) {
 		if (i % c == 0)
 		   break;
