@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     MPI_Barrier(MPI_COMM_WORLD);
    
     if (p_rank > FIRST) {
-       MPI_Recv(&primes, COUNT, MPI_LONG_LONG_INT, FIRST, 0, MPI_COMM_WORLD, &status);
+       MPI_Recv(primes, COUNT, MPI_LONG_LONG_INT, FIRST, 0, MPI_COMM_WORLD, &status);
     }
        
     /******************** split up array for load balancing ********************/
