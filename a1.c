@@ -47,8 +47,8 @@ int main(int argc, char **argv)
   long long int greatest_prime_gap = 0LL;
    
   int long long primes[problem_size];
+  int long long primes2[problem_size];
    
-  
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
@@ -57,19 +57,18 @@ int main(int argc, char **argv)
      
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
      printf("Initializing list...\n");
-     init_prime_list(primes, &problem_size);
+     init_prime_list(primes2, &problem_size);
      printf("Initializing list complete!\n");
      // testing prime list
      printf("Printing prime list for process %d\n", p_rank);
      for (int i = 0; i < problem_size; i++) {
-        printf("%lld ", primes[i]);
+        printf("%lld ", primes2[i]);
      }
      printf("\n");
      
      for (int dest = 1; dest < num_processors; dest++) {
-       MPI_Send(&primes, COUNT, MPI_INT, dest, 0, MPI_COMM_WORLD);
+       MPI_Send(&primes2, COUNT, MPI_INT, dest, 0, MPI_COMM_WORLD);
      }
-     
   }
    
   /******************** all other tasks do this part ***********************/
