@@ -82,8 +82,10 @@ int main(int argc, char **argv)
      
     if (p_rank < problem_size % num_processors)
   			evaluate_length += 1;
+   
+    int other_bit = min(p_rank, problem_size % num_processors);
 
-  	 i_start = p_rank * evaluate_length + ((p_rank < num_processors) ? p_rank : num_processors);
+  	 i_start = p_rank * evaluate_length + other_bit;
    evaluate_length++;
    
      printf("i_start for process %d: %lld\n", p_rank, i_start);
