@@ -15,7 +15,7 @@
 static void extend_prime_list(prime_list *list)
 {
        *(list->capacity) += INIT_LIST_LENGTH;
-       list->values = realloc(list->values, sizeof(mpz_t) * *(list->capacity));
+       list->values = realloc(list->values, sizeof(long long int) * *(list->capacity));
 	
        assert(list->values != NULL);
 }
@@ -28,7 +28,7 @@ static void extend_prime_list(prime_list *list)
 */
 static void trim_prime_list(prime_list *list)
 {
-        list->values = realloc(list->values, sizeof(mpz_t) * *(list->used));
+        list->values = realloc(list->values, sizeof(long long int) * *(list->used));
 	*(list->capacity) = *(list->used);
 	
 	assert(list->values != NULL);
@@ -43,49 +43,26 @@ void init_prime_list(prime_list *list, const long long int *starting_point, cons
 	*(list->capacity) = INIT_LIST_LENGTH;
 	list->used = malloc(sizeof(long long int));
 	*(list->used) = 0LL;
-	list->values = malloc(sizeof(mpz_t) * *(list->capacity));
+	list->values = malloc(sizeof(long long int) * *(list->capacity));
 	// Ensure that memory allocation succeeded
 	assert(list->values != NULL);
 	
-	mpz_t previous_prime, next_prime, max_primes, prime_count;
+	mpz_t previous_prime, next_prime;
 
 	// The LL suffix specifies the this literal is a long long. Avoids implicit typecasting.
 	mpz_init_set_ui(previous_prime, 1LL);
 	mpz_init_set_ui(next_prime, 1LL);
-	mpz_init_set_ui(max_primes, *problem_size);
-	mpz_init_set_ui(prime_count, 0LL);
-	
-	// Fast forward to starting_point if starting_point is > 0LL
-	if (*starting_point > 0LL)
-	{
-		mpz_t start_point;
-		mpz_init_set_ui(start_point, (*starting_point) - 1LL);
-		
-		while (mpz_cmp(prime_count, start_point) < 0)
-		{
-			mpz_nextprime(next_prime, previous_prime);
-			mpz_set(previous_prime, next_prime);
-			mpz_add_ui(prime_count, prime_count, 1LL);
-		}
-		
-		mpz_set_ui(prime_count, 0LL);
-		mpz_clear(start_point);
-	}
-	
-	long long int index = 0LL;
 	
 	// mpz_cmp returns a positive int if next_prime > upper_bound, 0 if =, negative if <
-	while (mpz_cmp(prime_count, max_primes) < 0)
+	while ((*(list->used)) < *problem_size)
 	{
 		// Lengthen the list if needed.
-	        if (index >= *(list->capacity))
+	        if ((*(list->used)) >= *(list->capacity))
 			extend_prime_list(list);
 		
 		// Add another prime number to the list.
-		mpz_init_set(list->values[index], previous_prime);
-		mpz_add_ui(prime_count, prime_count, 1LL);
+		mpz_export(&(list->values[(*(list->used))])), 0, -1, sizeof(long long int), 0, 0, previous_prime);
 		(*(list->used))++;
-		index++;
 		
 		// Determine the next prime number greater than the last prime added to the list.
 		mpz_nextprime(next_prime, previous_prime);
@@ -97,15 +74,13 @@ void init_prime_list(prime_list *list, const long long int *starting_point, cons
 
 	mpz_clear(previous_prime);
 	mpz_clear(next_prime);
-	mpz_clear(max_primes);
-	mpz_clear(prime_count);
 }
 
 void clear_prime_list(prime_list *list)
 {
-  // First free the memory taken by every mpz_t integer.
+  // First free the memory taken by every integer in list->values.
   for (long long int i = 0LL; i < *(list->capacity); ++i)
-    mpz_clear(list->values[i]);
+    free(list->values[i]);
 
   free(list->values);
   free(list->used);
