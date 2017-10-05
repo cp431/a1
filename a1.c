@@ -113,8 +113,8 @@ int main(int argc, char **argv)
     printf("prime1_index @ process %d: %lld\n", p_rank, prime1_index);
     printf("prime2_index @ process %d: %lld\n", p_rank, prime2_index);
    
-    temp_prime1 = primes[prime1_index];
-    temp_prime2 = primes[prime2_index];
+    temp_prime_1 = primes[prime1_index];
+    temp_prime_2 = primes[prime2_index];
     temp_prime_gap = diff;
                 
     MPI_Send(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
