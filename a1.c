@@ -47,7 +47,11 @@ int main(int argc, char **argv)
   long long int greatest_prime_2;
   long long int greatest_prime_gap;
    
-  long long int primes[problem_size] = {1LL, 2LL, 3LL, 4LL, 5LL, 6LL, 7LL, 8LL, 9LL, 10LL};
+  long long int primes[problem_size];
+   
+  for (long long int i; i < problem_size; i++) {
+     primes[i] = i;
+  }
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
