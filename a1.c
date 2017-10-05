@@ -93,7 +93,7 @@ int main(int argc, char **argv)
   /******************** all other tasks do this part ***********************/
   //if (p_rank > FIRST) {
      
-    MPI_Barrier(MPI_COMM_WORLD)
+    MPI_Barrier(MPI_COMM_WORLD);
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0LL, i_start = 0LL, max_diff = 0LL, diff = 0LL;
 
