@@ -8,7 +8,7 @@ void init_prime_list(long long int *list, const long long int *problem_size)
 	mpz_t previous_prime, next_prime;
 
 	// The LL suffix specifies the this literal is a long long. Avoids implicit typecasting.
-	mpz_init_set_si(previous_prime, 2LL);
+	mpz_init_set_si(previous_prime, 3LL);
 	mpz_init_set_si(next_prime, 0LL);
 	
 	// mpz_cmp returns a positive int if next_prime > upper_bound, 0 if =, negative if <
