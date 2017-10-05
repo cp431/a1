@@ -24,7 +24,6 @@ void init_prime_list(long long int **list, const long long int *problem_size)
 	{
 		// Add another prime number to the list.
 		mpz_export(&list[prime_count], 0, -1, sizeof(long long int), 0, 0, previous_prime);
-		(*(list->used))++;
 		
 		// Determine the next prime number greater than the last prime added to the list.
 		mpz_nextprime(next_prime, previous_prime);
