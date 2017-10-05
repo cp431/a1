@@ -77,10 +77,7 @@ int main(int argc, char **argv)
     MPI_Barrier(MPI_COMM_WORLD);
    
     if (p_rank > FIRST) {
-       int *primes;
-       int *temp_primes;
-       MPI_Recv(temp_primes, COUNT, MPI_INT, FIRST, 0, MPI_COMM_WORLD, &status);
-       primes = temp_primes;
+       MPI_Recv(primes, COUNT, MPI_INT, FIRST, 0, MPI_COMM_WORLD, &status);
        printf("Process %d got primes!\n", p_rank);
        printf("PRIME ADDRESS ON REC: %p\n",(void*)&primes);
     }
