@@ -12,7 +12,7 @@ Instructor: I. Kotsireas, e-mailikotsire@wlu.ca
 - Strict adherence to the SHARCNET etiquette (as per the course outline) is required.
 - Refer to the course outline for details on the assignment submission instructions.
 
-The gap between consecutive prime numbers 11 and 13 is equal to 2. The gap between consecutive prime numbers 503 and 509 is equal to 6. Write an MPI C or Python program to determine the largest gap between a pair of consecutive prime numbers, up to 1,000,000,00 (one billion). Your program should also output two primenumbers in the range [1:109] that realize the largest gap found.
+The gap between consecutive prime numbers 11 and 13 is equal to 2. The gap between consecutive prime numbers 503 and 509 is equal to 6. Write an MPI C or Python program to determine the largest gap between a pair of consecutive prime numbers, up to 1,000,000,00 (one billion). Your program should also output two prime numbers in the range [1:10^9] that realize the largest gap found.
 
 You can use any of the Number Theoretic Functions implemented in GMP, GNU Multiple Precision Arithmetic Library, http://gmplib.org/, such as mpz_probab_prime_p, mpz_next_prime. 
 
