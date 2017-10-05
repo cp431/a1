@@ -43,9 +43,9 @@ int main(int argc, char **argv)
   long long int temp_prime_2;
   long long int temp_prime_gap;
 
-  long long int greatest_prime_1;
-  long long int greatest_prime_2;
-  long long int greatest_prime_gap;
+  int greatest_prime_1;
+  int greatest_prime_2;
+  int greatest_prime_gap;
    
   int primes[problem_size];
    
