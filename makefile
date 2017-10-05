@@ -5,4 +5,4 @@ a1.o:	a1.c
 	mpicc -c -std=c99 a1.c
 
 clean: 
-	rm a1.o prime_list.o a1
+	rm a1.o a1
