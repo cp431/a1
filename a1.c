@@ -108,7 +108,7 @@ int main(int argc, char **argv)
     
    long long int j = 0LL, prime1_index = 0LL, prime2_index = 0LL; 
    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
-  	for (long long int i = i_start; i < i_start + evaluate_length; ++i) {
+  	for (long long int i = i_start; i < i_start + evaluate_length - 1; ++i) {
    		
          j = i + 1;
   		   diff = primes[j] - primes[i];
