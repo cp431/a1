@@ -75,8 +75,6 @@ int main(int argc, char **argv) {
     if (p_rank != num_processors - 1) {
        evaluate_length++;
     }
-	
-   long long int j = 0LL;
    
    mpz_t previous_prime, next_prime, diff, max_diff, prime1, prime2;
    mpz_init_set_si(previous_prime, i_start);
@@ -90,6 +88,8 @@ int main(int argc, char **argv) {
    
 //    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
    for (long long int i = i_start; i < i_start + evaluate_length - 1; ++i) {
+	   
+	 printf("i_start: %d", i_start);
        
          mpz_nextprime(next_prime, previous_prime);
          mpz_sub(diff, next_prime, previous_prime);
