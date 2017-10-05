@@ -73,9 +73,9 @@ int main(int argc, char **argv)
         MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, source, PRIME2, MPI_COMM_WORLD, &status);
         MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, source, PRIME_GAP, MPI_COMM_WORLD, &status);
         
-        mpz_printf("temp_prime_gap_mpz @ process %d: %Zd\n", source, temp_prime_gap_mpz);
-        mpz_printf("greatest_prime_1 @ process %d: %Zd\n", source, greatest_prime_1);
-        mpz_printf("greatest_prime_2 @ process %d: %Zd\n", source, greatest_prime_2);
+        gmp_printf("temp_prime_gap_mpz @ process %d: %Zd\n", source, temp_prime_gap_mpz);
+        gmp_printf("greatest_prime_1 @ process %d: %Zd\n", source, greatest_prime_1);
+        gmp_printf("greatest_prime_2 @ process %d: %Zd\n", source, greatest_prime_2);
         
         mpz_set_str(temp_prime_gap_mpz, temp_prime_gap, BASE_DECIMAL);
         
