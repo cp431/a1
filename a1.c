@@ -120,7 +120,7 @@ int main(int argc, char **argv)
     
    long long int j, prime1_index, prime2_index; 
    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank);  
-  	for (long long int i = 0; i < evaluate_length; ++i) {
+  	for (long long int i = 0; i < evaluate_length - 1LL; ++i) {
    		j = i + 1;
          
          gmp_printf("Prime 1: %Zd\n", *(get_prime_list_element_at(&list, &i)));
