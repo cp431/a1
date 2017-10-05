@@ -36,6 +36,7 @@ int main(int argc, char **argv)
   double end_time = 0.0;
   int p_rank = 0;
   MPI_Status status;
+  MPI_Request request;
   
    // gmp_printf has to be used to print mpz_ts, otherwise output makes no sense.
   // gmp_printf("Testing get element: %Zd\n", *(get_prime_list_element_at(&list, &index)));
@@ -138,7 +139,7 @@ int main(int argc, char **argv)
         MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, source, PRIME2, MPI_COMM_WORLD, &status);
         MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, source, PRIME_GAP, MPI_COMM_WORLD, &status);
         
-        MPI_Waitall(MPI_COMM_WORLD);
+        MPI_Wait(&request, &status);
         
         gmp_printf("temp_prime_gap_mpz @ process %d: %Zd\n", source, temp_prime_gap_mpz);
         gmp_printf("greatest_prime_1 @ process %d: %Zd\n", source, greatest_prime_1);
