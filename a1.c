@@ -30,8 +30,13 @@
 
 int main(int argc, char **argv) 
 {
+  if (argc < 2)
+  {
+     printf("ERROR: Missing problem size. Please specify on the command line.\n");
+     return -1;
+  }
    
-  long long int problem_size = 100LL;
+  long long int problem_size = atoll(argv[1]);
   int num_processors = 0;
   double start_time = 0.0;
   double end_time = 0.0;
