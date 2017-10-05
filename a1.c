@@ -47,7 +47,7 @@ int main(int argc, char **argv)
   long long int greatest_prime_gap = 0LL;
   
   long long int *root_primes = NULL; 
-  long long int *primes = malloc(sizeof(long long int) * problem_size);
+  long long int *primes = calloc(sizeof(long long int) * problem_size);
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
