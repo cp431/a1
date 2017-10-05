@@ -63,14 +63,14 @@ int main(int argc, char **argv) {
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0LL, i_start = 0LL;
 
-  	 evaluate_length = floor(problem_size / num_processors);
+    evaluate_length = floor(problem_size / num_processors);
      
     if (p_rank < problem_size % num_processors)
   			evaluate_length += 1;
    
     int other_bit = MIN(p_rank, problem_size % num_processors);
 
-  	 i_start = p_rank * evaluate_length + other_bit;
+    i_start = p_rank * evaluate_length + other_bit;
    
     if (p_rank != num_processors - 1) {
        evaluate_length++;
@@ -112,8 +112,6 @@ int main(int argc, char **argv) {
     MPI_Send(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME_GAP, MPI_COMM_WORLD);
-   
-    MPI_Barrier(MPI_COMM_WORLD);
    
     if (p_rank == FIRST) {
            // Return largest prime gap from other processors
