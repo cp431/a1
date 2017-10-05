@@ -68,7 +68,7 @@ int main(int argc, char **argv)
      
      printf("PRIME ADDRESS ON SEND: %p\n",(void*)&root_primes);
      for (int dest = 1; dest < num_processors; dest++) {
-       MPI_Scatter(root_primes, problem_size, MPI_LONG_LONG_INT,
+       MPI_Scatter(root_primes, 5, MPI_LONG_LONG_INT,
                primes, 5, MPI_LONG_LONG_INT, FIRST,
                MPI_COMM_WORLD);
      }
