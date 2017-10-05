@@ -33,7 +33,7 @@ void init_prime_list(long long int *list, const long long int *problem_size)
 	      }  
 	   if (c == i) {
 		list[count] = i;
-		printf("Prime found: %lld", i);
+		printf("%lld prime found: %lld\n", count, i);
 		count++;
 	   }
 	   i++;
