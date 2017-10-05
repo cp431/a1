@@ -65,19 +65,17 @@ int main(int argc, char **argv)
         printf("%lld ", root_primes[i]);
      }
      printf("\n");
-     
-     printf("PRIME ADDRESS ON SEND: %p\n",(void*)&root_primes);
-     for (int dest = 1; dest < num_processors; dest++) {
-       MPI_Scatter(root_primes, 5, MPI_LONG_LONG_INT,
-               primes, 5, MPI_LONG_LONG_INT, FIRST,
-               MPI_COMM_WORLD);
-     }
   }
+   
    
   /******************** all other tasks do this part ***********************/
   //if (p_rank > FIRST) {
      
     MPI_Barrier(MPI_COMM_WORLD);
+   
+    MPI_Scatter(root_primes, problem_size, MPI_LONG_LONG_INT,
+           primes, problem_size, MPI_LONG_LONG_INT, FIRST,
+           MPI_COMM_WORLD);
        
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0LL, i_start = 0LL, max_diff = 0LL, diff = 0LL;
