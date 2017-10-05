@@ -58,15 +58,7 @@ int main(int argc, char **argv) {
   start_time = MPI_Wtime();   /* Initialize start time */
    
   /******************** all tasks do this part ***********************/
-   
-    MPI_Barrier(MPI_COMM_WORLD);
-   
-    MPI_Bcast(
-       primes,
-       problem_size,
-       MPI_LONG_LONG_INT,
-       FIRST,
-       MPI_COMM_WORLD);
+  
        
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0LL, i_start = 0LL, max_diff = 0LL, diff = 0LL;
@@ -94,7 +86,7 @@ int main(int argc, char **argv) {
 //      }
 //      printf("\n");
     
-   long long int j = 0LL, prime1_index = 0LL, prime2_index = 0LL; 
+   long long int j = 0LL;
    
    mpz_t previous_prime, next_prime, diff, max_diff, prime1, prime2;
    mpz_init_set_si(previous_prime, i_start);
