@@ -78,6 +78,7 @@ int main(int argc, char **argv)
    
     if (p_rank > FIRST) {
        int *primes;
+       int *temp_primes;
        MPI_Recv(temp_primes, COUNT, MPI_INT, FIRST, 0, MPI_COMM_WORLD, &status);
        primes = temp_primes;
        printf("Process %d got primes!\n", p_rank);
