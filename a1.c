@@ -78,28 +78,28 @@ int main(int argc, char **argv)
     
    long long int j = 0LL, prime1_index = 0LL, prime2_index = 0LL; 
    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank);  
-  	for (long long int i = 0; i < evaluate_length - 1LL; ++i) {
+  	for (long long int i = 0LL; i < evaluate_length - 1LL; ++i) {
    		j = i + 1;
          
-         printf("Prime 1: %d\n", primes[i]);
-         printf("Prime 2: %d\n", primes[j]);
+         printf("Prime 1: %lld\n", primes[i]);
+         printf("Prime 2: %lld\n", primes[j]);
       
   		   diff = primes[j] - primes[i];
-         printf("Difference: %d\n", diff);
+         printf("Difference: %lld\n", diff);
   		
          if (diff > max_diff)
          {
             printf("Boop Beep! Process %d here, found a new maximum!\n", p_rank);
-            printf("New max: %d\n", diff);
+            printf("New max: %lld\n", diff);
             max_diff = diff;
             prime1_index = i;
             prime2_index = j;
          }
     }
    
-    printf("temp_prime_gap @ process %d: %d\n", p_rank, temp_prime_gap);
-    printf("temp_prime_1 @ process %d: %d\n", p_rank, temp_prime_1);
-    printf("temp_prime_2 @ process %d: %d\n", p_rank, temp_prime_2);
+    printf("temp_prime_gap @ process %d: %lld\n", p_rank, temp_prime_gap);
+    printf("temp_prime_1 @ process %d: %lld\n", p_rank, temp_prime_1);
+    printf("temp_prime_2 @ process %d: %lld\n", p_rank, temp_prime_2);
                 
     MPI_Send(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
