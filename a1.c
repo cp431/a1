@@ -61,37 +61,6 @@ int main(int argc, char **argv)
    start_time = MPI_Wtime();   /* Initialize start time */
    long long int start_point = 0LL;
    
-   if (p_rank == FIRST) {
-     printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
-    
-      mpz_init_set_ui(greatest_prime_gap, 0LL);
-      
-     // Return largest prime gap from other processors
-     for (int source = 1; source < num_processors; ++source) { 
-
-        MPI_Recv(temp_prime_1, BUFF, MPI_CHAR, source, PRIME1, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, source, PRIME2, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, source, PRIME_GAP, MPI_COMM_WORLD, &status);
-        
-        gmp_printf("temp_prime_gap_mpz @ process %d: %Zd\n", source, temp_prime_gap_mpz);
-        gmp_printf("greatest_prime_1 @ process %d: %Zd\n", source, greatest_prime_1);
-        gmp_printf("greatest_prime_2 @ process %d: %Zd\n", source, greatest_prime_2);
-        
-        mpz_set_str(temp_prime_gap_mpz, temp_prime_gap, BASE_DECIMAL);
-        
-        if (mpz_cmp(temp_prime_gap_mpz, greatest_prime_gap) > 0LL) {
-           mpz_set(greatest_prime_gap, temp_prime_gap_mpz);
-           mpz_set_str(greatest_prime_1, temp_prime_1, BASE_DECIMAL);
-           mpz_set_str(greatest_prime_2, temp_prime_2, BASE_DECIMAL);
-        }
-     }
-   
-     mpz_clear(greatest_prime_gap);
-     mpz_clear(greatest_prime_1);
-     mpz_clear(greatest_prime_2);
-     mpz_clear(temp_prime_gap_mpz);
-  }
-   
   /******************** all other tasks do this part ***********************/
   if (p_rank > FIRST) {
     /******************** split up array for load balancing ********************/
@@ -157,12 +126,42 @@ int main(int argc, char **argv)
     
   }
    
-  if (p_rank == 0) {
+   if (p_rank == FIRST) {
+     printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
+    
+      mpz_init_set_ui(greatest_prime_gap, 0LL);
+      
+     // Return largest prime gap from other processors
+     for (int source = 1; source < num_processors; ++source) { 
+
+        MPI_Recv(temp_prime_1, BUFF, MPI_CHAR, source, PRIME1, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, source, PRIME2, MPI_COMM_WORLD, &status);
+        MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, source, PRIME_GAP, MPI_COMM_WORLD, &status);
+        
+        gmp_printf("temp_prime_gap_mpz @ process %d: %Zd\n", source, temp_prime_gap_mpz);
+        gmp_printf("greatest_prime_1 @ process %d: %Zd\n", source, greatest_prime_1);
+        gmp_printf("greatest_prime_2 @ process %d: %Zd\n", source, greatest_prime_2);
+        
+        mpz_set_str(temp_prime_gap_mpz, temp_prime_gap, BASE_DECIMAL);
+        
+        if (mpz_cmp(temp_prime_gap_mpz, greatest_prime_gap) > 0LL) {
+           mpz_set(greatest_prime_gap, temp_prime_gap_mpz);
+           mpz_set_str(greatest_prime_1, temp_prime_1, BASE_DECIMAL);
+           mpz_set_str(greatest_prime_2, temp_prime_2, BASE_DECIMAL);
+        }
+     }
+   
+     mpz_clear(greatest_prime_gap);
+     mpz_clear(greatest_prime_1);
+     mpz_clear(greatest_prime_2);
+     mpz_clear(temp_prime_gap_mpz);
+      
      end_time = MPI_Wtime();
      printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
      gmp_printf("The largest prime gap is: %Zd\n", greatest_prime_gap);
      gmp_printf("This gap is realized by the difference between %Zd and %Zd\n", greatest_prime_1, greatest_prime_2);
   }
+   
   
   MPI_Finalize();
   return 0;
