@@ -46,13 +46,14 @@ int main(int argc, char **argv)
   long long int greatest_prime_2 = 0LL;
   long long int greatest_prime_gap = 0LL;
    
+  int long long *primes = malloc(sizeof(long long int) * problem_size);   
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
      
-     int long long *primes = malloc(sizeof(long long int) * problem_size);
+     
      
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
      printf("Initializing list...\n");
