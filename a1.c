@@ -45,16 +45,14 @@ int main(int argc, char **argv)
   long long int greatest_prime_1 = 0LL;
   long long int greatest_prime_2 = 0LL;
   long long int greatest_prime_gap = 0LL;
-   
+  
+  long long int *root_primes = malloc(sizeof(long long int) * problem_size); 
   long long int *primes = malloc(sizeof(long long int) * problem_size);
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
-     
-     long long int *root_primes = malloc(sizeof(long long int) * problem_size); 
-     
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
      printf("Initializing list...\n");
      init_prime_list(root_primes, &problem_size);
@@ -68,14 +66,13 @@ int main(int argc, char **argv)
   }
    
    
-  /******************** all other tasks do this part ***********************/
-  //if (p_rank > FIRST) {
+   /******************** all other tasks do this part ***********************/
      
-    MPI_Barrier(MPI_COMM_WORLD);
-   
-    MPI_Scatter(root_primes, problem_size, MPI_LONG_LONG_INT,
-           primes, problem_size, MPI_LONG_LONG_INT, FIRST,
-           MPI_COMM_WORLD);
+   MPI_Barrier(MPI_COMM_WORLD);
+
+   MPI_Scatter(root_primes, problem_size, MPI_LONG_LONG_INT,
+        primes, problem_size, MPI_LONG_LONG_INT, FIRST,
+        MPI_COMM_WORLD);
        
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0LL, i_start = 0LL, max_diff = 0LL, diff = 0LL;
@@ -132,7 +129,6 @@ int main(int argc, char **argv)
     MPI_Send(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME_GAP, MPI_COMM_WORLD);
-  //}
    
    if (p_rank == FIRST) {
            // Return largest prime gap from other processors
