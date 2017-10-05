@@ -71,10 +71,10 @@ int main(int argc, char **argv)
    
    /******************** all other tasks do this part ***********************/
    
-   MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD);
 
     MPI_Scatter(root_primes, problem_size, MPI_LONG_LONG_INT,
-        primes, problem_size, MPI_LONG_LONG_INT, FIRST,
+        primes, problem_size, MPI_LONG_LONG_INT, 0,
         MPI_COMM_WORLD);
        
     /******************** split up array for load balancing ********************/
