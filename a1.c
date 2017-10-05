@@ -55,9 +55,15 @@ int main(int argc, char **argv)
   if (p_rank == FIRST) {
       
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
-     printf("Initializing list...");
+     printf("Initializing list...\n");
      init_prime_list(primes, &problem_size);
      printf("Initializing list complete!");
+     // testing prime list
+     printf("Printing prime list for process %d\n", p_rank);
+     for (int i = 0; i < evaluate_length; i++) {
+        printf("%lld ", primes[i]);
+     }
+     printf("\n");
 
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; ++source) { 
