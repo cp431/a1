@@ -49,10 +49,6 @@ int main(int argc, char **argv)
    
   int long long primes[problem_size];
    
-  for (int long long i = 0LL; i < problem_size; i++) {
-     primes[i] = i;
-  }
-   
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
    
@@ -110,7 +106,7 @@ int main(int argc, char **argv)
       
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
       
-     //init_prime_list(primes, &problem_size);
+     init_prime_list(primes, &problem_size);
       
 
      // Return largest prime gap from other processors
