@@ -49,7 +49,7 @@ int main(int argc, char **argv)
    
   int long long primes[problem_size];
    
-  for (int long long i; i < problem_size; i++) {
+  for (int long long i = 0LL; i < problem_size; i++) {
      primes[i] = i;
   }
    
