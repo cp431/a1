@@ -52,6 +52,38 @@ int main(int argc, char **argv)
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
    
+  if (p_rank == FIRST) {
+      
+     printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
+     printf("Initializing list...");
+     init_prime_list(primes, &problem_size);
+     printf("Initializing list complete!");
+
+     // Return largest prime gap from other processors
+     for (int source = 1; source < num_processors; ++source) { 
+
+        MPI_Recv(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, source, PRIME1, MPI_COMM_WORLD, &status);
+        MPI_Recv(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, source, PRIME2, MPI_COMM_WORLD, &status);
+        MPI_Recv(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, source, PRIME_GAP, MPI_COMM_WORLD, &status);
+        
+        printf("temp_prime_gap @ process %d: %lld\n", source, temp_prime_gap);
+        printf("greatest_prime_1 @ process %d: %lld\n", source, greatest_prime_1);
+        printf("greatest_prime_2 @ process %d: %lld\n", source, greatest_prime_2);
+       
+        
+        if (temp_prime_gap > greatest_prime_gap) {
+           greatest_prime_gap = temp_prime_gap;
+           greatest_prime_1 = temp_prime_1;
+           greatest_prime_2 = temp_prime_2;
+        }
+     }
+
+     end_time = MPI_Wtime();
+     printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
+     printf("The largest prime gap is: %lld\n", greatest_prime_gap);
+     printf("This gap is realized by the difference between %lld and %lld\n", greatest_prime_1, greatest_prime_2); 
+  }
+   
   /******************** all other tasks do this part ***********************/
   if (p_rank > FIRST) {
      
@@ -100,38 +132,6 @@ int main(int argc, char **argv)
     MPI_Send(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME_GAP, MPI_COMM_WORLD);
-  }
-   
-   if (p_rank == FIRST) {
-      
-     printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
-      
-     init_prime_list(primes, &problem_size);
-      
-
-     // Return largest prime gap from other processors
-     for (int source = 1; source < num_processors; ++source) { 
-
-        MPI_Recv(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, source, PRIME1, MPI_COMM_WORLD, &status);
-        MPI_Recv(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, source, PRIME2, MPI_COMM_WORLD, &status);
-        MPI_Recv(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, source, PRIME_GAP, MPI_COMM_WORLD, &status);
-        
-        printf("temp_prime_gap @ process %d: %lld\n", source, temp_prime_gap);
-        printf("greatest_prime_1 @ process %d: %lld\n", source, greatest_prime_1);
-        printf("greatest_prime_2 @ process %d: %lld\n", source, greatest_prime_2);
-       
-        
-        if (temp_prime_gap > greatest_prime_gap) {
-           greatest_prime_gap = temp_prime_gap;
-           greatest_prime_1 = temp_prime_1;
-           greatest_prime_2 = temp_prime_2;
-        }
-     }
-
-     end_time = MPI_Wtime();
-     printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
-     printf("The largest prime gap is: %lld\n", greatest_prime_gap);
-     printf("This gap is realized by the difference between %lld and %lld\n", greatest_prime_1, greatest_prime_2); 
   }
    
   
