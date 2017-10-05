@@ -75,17 +75,7 @@ int main(int argc, char **argv) {
     if (p_rank != num_processors - 1) {
        evaluate_length++;
     }
-    
-   
-//      printf("i_start for process %d: %lld\n", p_rank, i_start);
-      
-//      // testing prime list
-//      printf("Printing prime list for process %d\n", p_rank);
-//      for (int i = i_start; i < i_start + evaluate_length; i++) {
-//         printf("%lld ", primes[i]);
-//      }
-//      printf("\n");
-    
+	
    long long int j = 0LL;
    
    mpz_t previous_prime, next_prime, diff, max_diff, prime1, prime2;
@@ -103,9 +93,9 @@ int main(int argc, char **argv) {
          mpz_nextprime(next_prime, previous_prime);
   		   mpz_sub(diff, next_prime, previous_prime);
       
-//          printf("Prime 1 at index %lld: %lld\n", i, primes[i]);
-//          printf("Prime 2 at index %lld: %lld\n", j, primes[j]);
-//          printf("Difference: %lld\n", diff);
+         printf("Prime 1: %Zd\n", previous_prime);
+         printf("Prime 2: %Zd\n", next_prime);
+         printf("Difference: %lld\n", diff);
   		
          if (mpz_cmp(diff, max_diff) == 1) {
             mpz_set(max_diff, diff);
