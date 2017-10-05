@@ -18,5 +18,5 @@ void init_prime_list(long long int *list, const long long int *problem_size);
 * 
 * @param list pointer to the list of prime numbers.
 */
-void clear_prime_list(long long int **list);
+void clear_prime_list(long long int *list);
 #endif
