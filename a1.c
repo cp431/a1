@@ -51,7 +51,7 @@ int main(int argc, char **argv)
   long long int greatest_prime_2 = 0LL;
   long long int greatest_prime_gap = 0LL;
   
-  long long int *primes = calloc(problem_size, sizeof(long long int));
+  long long int *primes = calloc(problem_size + 1, sizeof(long long int));
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
