@@ -88,12 +88,24 @@ int main(int argc, char **argv)
     if (p_rank != FIRST) {
        i_start -= 1;
     }
+   
+     printf("i_start for process %d: %lld\n", p_rank, i_start);
+      
+     // testing prime list
+     printf("Printing prime list for process %d\n", p_rank);
+     for (int i = i_start; i < i_start + evaluate_length; i++) {
+        printf("%lld ", primes[i]);
+     }
+     printf("\n");
     
    long long int j = 0LL, prime1_index = 0LL, prime2_index = 0LL; 
+   printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
   	for (long long int i = i_start; i < i_start + evaluate_length - 1; ++i) {
    		
          j = i + 1;
   		   diff = primes[j] - primes[i];
+         printf("Prime 1 at index %lld: %lld\n", i, primes[i]);
+         printf("Prime 2 at index %lld: %lld\n", j, primes[j]);
          printf("Difference: %lld\n", diff);
   		
          if (diff > max_diff) {
