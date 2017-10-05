@@ -60,10 +60,9 @@ int main(int argc, char **argv)
    
   /******************** task with rank 0 does this part ********************/
    start_time = MPI_Wtime();   /* Initialize start time */
-   long long int start_point = 0LL;
    
   /******************** all other tasks do this part ***********************/
-  if (p_rank > FIRST) {
+  //if (p_rank > FIRST) {
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0, i_start = 0;
     
@@ -124,7 +123,7 @@ int main(int argc, char **argv)
     MPI_Send(temp_prime_1, strlen(temp_prime_1)+1, MPI_CHAR, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(temp_prime_2, strlen(temp_prime_2)+1, MPI_CHAR, FIRST, PRIME2, MPI_COMM_WORLD);
     MPI_Send(temp_prime_gap, strlen(temp_prime_gap)+1, MPI_CHAR, FIRST, PRIME_GAP, MPI_COMM_WORLD);
-  }
+  //}
    
    if (p_rank == FIRST) {
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
