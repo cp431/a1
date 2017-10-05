@@ -30,7 +30,7 @@ extern inline void subtract_primes(const mpz_t num1, const mpz_t num2, mpz_t out
 int main(int argc, char **argv) 
 {
   
-  long long int problem_size = 10LL;
+  long long int problem_size = 100LL;
   int num_processors = 0;
   double start_time = 0.0;
   double end_time = 0.0;
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
    start_time = MPI_Wtime();   /* Initialize start time */
    
   /******************** all other tasks do this part ***********************/
-  //if (p_rank > FIRST) {
+  if (p_rank > FIRST) {
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0, i_start = 0;
     
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
     MPI_Send(temp_prime_1, strlen(temp_prime_1)+1, MPI_CHAR, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(temp_prime_2, strlen(temp_prime_2)+1, MPI_CHAR, FIRST, PRIME2, MPI_COMM_WORLD);
     MPI_Send(temp_prime_gap, strlen(temp_prime_gap)+1, MPI_CHAR, FIRST, PRIME_GAP, MPI_COMM_WORLD);
-  //}
+  }
    
    if (p_rank == FIRST) {
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
