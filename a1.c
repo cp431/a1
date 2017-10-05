@@ -145,9 +145,9 @@ int main(int argc, char **argv)
     mpz_clear(diff);
     clear_prime_list(&list); 
    
-    printf("temp_prime_gap @ process %d: %s", p_rank, temp_prime_gap);
-    printf("temp_prime_1 @ process %d: %s", p_rank, temp_prime_1);
-    printf("temp_prime_2 @ process %d: %s", p_rank, temp_prime_2);
+    printf("temp_prime_gap @ process %d: %s\n", p_rank, temp_prime_gap);
+    printf("temp_prime_1 @ process %d: %s\n", p_rank, temp_prime_1);
+    printf("temp_prime_2 @ process %d: %s\n", p_rank, temp_prime_2);
                 
     MPI_Send(temp_prime_1, strlen(temp_prime_1)+1, MPI_CHAR, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(temp_prime_2, strlen(temp_prime_2)+1, MPI_CHAR, FIRST, PRIME2, MPI_COMM_WORLD);
