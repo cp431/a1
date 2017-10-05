@@ -4,14 +4,14 @@
 #include <stddef.h>
 
 // Private helper function to calculate array length.
-static inline long long int get_prime_list_length(long long int **list)
+static inline long long int get_prime_list_length(long long int *list)
 {
 	return (sizeof(list) / sizeof(list[0]));
 }
 
 // Implementations of the prime_list functions specified in prime_list.h.
 
-void init_prime_list(long long int **list, const long long int *problem_size) 
+void init_prime_list(long long int *list, const long long int *problem_size) 
 {
 	mpz_t previous_prime, next_prime;
 
@@ -34,7 +34,7 @@ void init_prime_list(long long int **list, const long long int *problem_size)
 	mpz_clear(next_prime);
 }
 
-void clear_prime_list(long long int **list)
+void clear_prime_list(long long int *list)
 {
   // First free the memory taken by every integer in list->values.
   for (long long int i = 0LL; i < get_prime_list_length(list); ++i)
