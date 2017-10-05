@@ -127,12 +127,12 @@ int main(int argc, char **argv)
          gmp_printf("Prime 2: %Zd\n", *(get_prime_list_element_at(&list, &j)));
       
   		   subtract_primes(*(get_prime_list_element_at(&list, &i)), *(get_prime_list_element_at(&list, &j)), diff);
-         gmp_print("Difference: %Zd", diff);
+         gmp_printf("Difference: %Zd", diff);
   		
          if (mpz_cmp(diff, max_diff) > 0LL)
          {
             printf("Boop Beep! Process %d here, found a new maximum!\n", p_rank);
-            gmp_printf ("New max: %Zd\n", diff);
+            gmp_printf("New max: %Zd\n", diff);
             mpz_set(max_diff, diff);
             prime1_index = i;
             prime2_index = j;
