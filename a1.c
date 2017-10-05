@@ -54,7 +54,7 @@ int main(int argc, char **argv)
    
   if (p_rank == FIRST) {
      
-     root_primes = malloc(sizeof(long long int) * problem_size)
+     root_primes = malloc(sizeof(long long int) * problem_size);
      
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
      printf("Initializing list...\n");
