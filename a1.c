@@ -30,7 +30,7 @@ extern inline void subtract_primes(const mpz_t num1, const mpz_t num2, mpz_t out
 int main(int argc, char **argv) 
 {
    
-  long long int problem_size = 1000000000LL;
+  long long int problem_size = 10000LL;
   int num_processors = 0;
   double start_time = 0.0;
   double end_time = 0.0;
