@@ -106,7 +106,7 @@ int main(int argc, char **argv)
       
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
       
-     init_prime_list(primes, &problem_size);
+     init_prime_list(&primes, &problem_size);
 
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; ++source) { 
