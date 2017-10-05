@@ -87,6 +87,10 @@ int main(int argc, char **argv)
 
   	 i_start = p_rank * floor(problem_size / num_processors) + ((p_rank < num_processors) ? p_rank : num_processors);
    
+    if (p_rank != FIRST) {
+       i_start -= 1;
+    }
+   
     printf("i_start for process %d: %lld\n", p_rank, i_start);
      
     // testing prime list
