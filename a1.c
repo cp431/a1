@@ -107,7 +107,10 @@ int main(int argc, char **argv)
   }
    
    if (p_rank == FIRST) {
-//      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
+      
+     printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
+      
+     init_prime_list(&primes, &problem_size);
 
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; ++source) { 
@@ -116,7 +119,7 @@ int main(int argc, char **argv)
         MPI_Recv(temp_prime_2, COUNT, MPI_LONG_LONG_INT, source, PRIME2, MPI_COMM_WORLD, &status);
         MPI_Recv(temp_prime_gap, COUNT, MPI_LONG_LONG_INT, source, PRIME_GAP, MPI_COMM_WORLD, &status);
         
-        printf("temp_prime_gap_mpz @ process %d: %lld\n", source, temp_prime_gap);
+        printf("temp_prime_gap @ process %d: %lld\n", source, temp_prime_gap);
         printf("greatest_prime_1 @ process %d: %lld\n", source, greatest_prime_1);
         printf("greatest_prime_2 @ process %d: %lld\n", source, greatest_prime_2);
        
