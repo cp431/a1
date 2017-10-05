@@ -125,6 +125,8 @@ int main(int argc, char **argv)
     MPI_Send(temp_prime_2, strlen(temp_prime_2)+1, MPI_CHAR, FIRST, PRIME2, MPI_COMM_WORLD);
     MPI_Send(temp_prime_gap, strlen(temp_prime_gap)+1, MPI_CHAR, FIRST, PRIME_GAP, MPI_COMM_WORLD);
     
+    MPI_Wait(&request, &status);
+    
   }
    
    if (p_rank == FIRST) {
@@ -138,8 +140,6 @@ int main(int argc, char **argv)
         MPI_Recv(temp_prime_1, BUFF, MPI_CHAR, source, PRIME1, MPI_COMM_WORLD, &status);
         MPI_Recv(temp_prime_2, BUFF, MPI_CHAR, source, PRIME2, MPI_COMM_WORLD, &status);
         MPI_Recv(temp_prime_gap, BUFF, MPI_CHAR, source, PRIME_GAP, MPI_COMM_WORLD, &status);
-        
-        MPI_Wait(&request, &status);
         
         gmp_printf("temp_prime_gap_mpz @ process %d: %Zd\n", source, temp_prime_gap_mpz);
         gmp_printf("greatest_prime_1 @ process %d: %Zd\n", source, greatest_prime_1);
