@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
   
        
     /******************** split up array for load balancing ********************/
-    long long int evaluate_length = 0LL, i_start = 0LL, max_diff = 0LL, diff = 0LL;
+    long long int evaluate_length = 0LL, i_start = 0LL;
 
   	 evaluate_length = floor(problem_size / num_processors);
      
