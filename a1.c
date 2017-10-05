@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
 //    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
    for (long long int i = i_start; i < i_start + evaluate_length - 1; ++i) {
 	   
-	 printf("i_start: %d", i_start);
+	 printf("i_start: %lld", i_start);
        
          mpz_nextprime(next_prime, previous_prime);
          mpz_sub(diff, next_prime, previous_prime);
