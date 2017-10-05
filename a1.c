@@ -59,7 +59,7 @@ int main(int argc, char **argv)
    
   /******************** task with rank 0 does this part ********************/
    start_time = MPI_Wtime();   /* Initialize start time */
-   long long int start_point = 5LL;
+   long long int start_point = 0LL;
    
    if (p_rank == FIRST) {
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
