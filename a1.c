@@ -65,6 +65,7 @@ int main(int argc, char **argv)
      }
      printf("\n");
      
+     printf("PRIMES ADDRESS: %d", &primes);
      for (int dest = 1; dest < num_processors; dest++) {
        MPI_Send(primes, COUNT, MPI_INT, dest, 0, MPI_COMM_WORLD);
      }
@@ -76,8 +77,9 @@ int main(int argc, char **argv)
     MPI_Barrier(MPI_COMM_WORLD);
    
     if (p_rank > FIRST) {
-       MPI_Recv(primes, COUNT, MPI_LONG_LONG_INT, FIRST, 0, MPI_COMM_WORLD, &status);
+       MPI_Recv(primes, COUNT, MPI_INT, FIRST, 0, MPI_COMM_WORLD, &status);
        printf("Process %d got primes!\n", p_rank);
+       printf("PRIMES ADDRESS: %d", &primes);
     }
        
     /******************** split up array for load balancing ********************/
