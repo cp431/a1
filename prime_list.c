@@ -17,12 +17,9 @@ void init_prime_list(long long int *list, const long long int *problem_size)
 	//for (long long int prime_count = 0LL; prime_count < *problem_size; ++prime_count)
 	//{
 		// Add another prime number to the list.
-		//mpz_export(&list[prime_count], NULL, -1, sizeof(long long int), -1, 0, previous_prime);
+		//mpz_export(&list[prime_count], 0, -1, sizeof(long long int), 0, 0, previous_prime);
 		//mpz_set(temp, previous_prime);
 		//gmp_printf("Prime %lld: %Zd\n", prime_count, temp);
-		//prime = mpz_get_si(temp);
-		//printf("%ld\n", prime);
-		//printf("Prime %lld: %lld", prime_count, prime);
 		
 	long long int i = 2, c;
 	for (long long int count = 1; count <= *problem_size; ) {
@@ -32,7 +29,6 @@ void init_prime_list(long long int *list, const long long int *problem_size)
 	      }  
 	   if (c == i) {
 		list[count-1] = i;
-		printf("%lld prime found: %lld\n", count, list[count-1]);
 		count++;
 	   }
 	   i++;
