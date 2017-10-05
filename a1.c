@@ -52,7 +52,6 @@ int main(int argc, char **argv)
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
-
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
      printf("Initializing list...\n");
      init_prime_list(primes, &problem_size);
@@ -63,12 +62,9 @@ int main(int argc, char **argv)
         printf("%lld ", primes[i]);
      }
      printf("\n");
-     
-     
-     
   }
 
-   /******************** all other tasks do this part ***********************/
+   /******************** all tasks do this part ***********************/
    
     MPI_Barrier(MPI_COMM_WORLD);
    
@@ -92,48 +88,25 @@ int main(int argc, char **argv)
     if (p_rank != FIRST) {
        i_start -= 1;
     }
-   
-    printf("i_start for process %d: %lld\n", p_rank, i_start);
-     
-    // testing prime list
-    printf("Printing prime list for process %d\n", p_rank);
-    for (int i = i_start; i < i_start + evaluate_length; i++) {
-       printf("%lld ", primes[i]);
-    }
-    printf("\n");
     
    long long int j = 0LL, prime1_index = 0LL, prime2_index = 0LL; 
-   printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank);  
   	for (long long int i = i_start; i < i_start + evaluate_length - 1; ++i) {
-   		j = i + 1;
-         
-         printf("Prime 1 at index %lld: %lld\n", i, primes[i]);
-         printf("Prime 2 at index %lld: %lld\n", j, primes[j]);
-      
+   		
+         j = i + 1;
   		   diff = primes[j] - primes[i];
          printf("Difference: %lld\n", diff);
   		
          if (diff > max_diff)
          {
-            printf("Boop Beep! Process %d here, found a new maximum!\n", p_rank);
-            printf("New max: %lld\n", diff);
             max_diff = diff;
             prime1_index = i;
             prime2_index = j;
          }
     }
    
-    printf("max_diff @ process %d: %lld\n", p_rank, max_diff);
-    printf("prime1_index @ process %d: %lld\n", p_rank, prime1_index);
-    printf("prime2_index @ process %d: %lld\n", p_rank, prime2_index);
-   
     temp_prime_1 = primes[prime1_index];
     temp_prime_2 = primes[prime2_index];
     temp_prime_gap = diff;
-   
-    printf("temp_prime_1 @ process %d: %lld\n", p_rank, temp_prime_1);
-    printf("temp_prime_1 @ process %d: %lld\n", p_rank, temp_prime_2);
-    printf("temp_prime_gap @ process %d: %lld\n", p_rank, temp_prime_gap);
                 
     MPI_Send(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
     MPI_Send(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
@@ -146,11 +119,6 @@ int main(int argc, char **argv)
         MPI_Recv(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, source, PRIME1, MPI_COMM_WORLD, &status);
         MPI_Recv(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, source, PRIME2, MPI_COMM_WORLD, &status);
         MPI_Recv(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, source, PRIME_GAP, MPI_COMM_WORLD, &status);
-        
-        printf("temp_prime_gap @ process %d: %lld\n", source, temp_prime_gap);
-        printf("greatest_prime_1 @ process %d: %lld\n", source, greatest_prime_1);
-        printf("greatest_prime_2 @ process %d: %lld\n", source, greatest_prime_2);
-       
         
         if (temp_prime_gap > greatest_prime_gap) {
            greatest_prime_gap = temp_prime_gap;
@@ -165,7 +133,6 @@ int main(int argc, char **argv)
      printf("This gap is realized by the difference between %lld and %lld\n", greatest_prime_1, greatest_prime_2); 
   }
    
-  
   MPI_Finalize();
   return 0;
 }
