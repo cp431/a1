@@ -1,22 +1,16 @@
 /**
    a1.c
    ====
-   CP431_A01
-   Bradly katz
-   Gearth Sharpe
-   Sarah Johnston
-   Frank Khalil 160226600
+   This program will eventually do things.
 */
 
-
-// C Libraries  
 #include "mpi.h"
 #include "prime_list.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-// Min function 
+
 #ifndef MIN
 #define MIN(a,b) (((a) < (b)) ? (a) : (b))
 #endif
@@ -37,7 +31,7 @@
 int main(int argc, char **argv) 
 {
    
-  long long int problem_size = 10LL;
+  long long int problem_size = 100LL;
   int num_processors = 0;
   double start_time = 0.0;
   double end_time = 0.0;
@@ -57,7 +51,7 @@ int main(int argc, char **argv)
   long long int greatest_prime_2 = 0LL;
   long long int greatest_prime_gap = 0LL;
   
-  long long int *primes = calloc(problem_size + 1, sizeof(long long int));
+  long long int *primes = calloc(problem_size, sizeof(long long int));
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
@@ -97,7 +91,11 @@ int main(int argc, char **argv)
     int other_bit = MIN(p_rank, problem_size % num_processors);
 
   	 i_start = p_rank * evaluate_length + other_bit;
-    evaluate_length++;
+   
+    if (p_rank != num_processors - 1) {
+       evaluate_length++;
+    }
+    
    
      printf("i_start for process %d: %lld\n", p_rank, i_start);
       
@@ -110,7 +108,7 @@ int main(int argc, char **argv)
     
    long long int j = 0LL, prime1_index = 0LL, prime2_index = 0LL; 
    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
-  	for (long long int i = i_start; i < i_start + evaluate_length; ++i) {
+  	for (long long int i = i_start; i < i_start + evaluate_length - 1; ++i) {
    		
          j = i + 1;
   		   diff = primes[j] - primes[i];
