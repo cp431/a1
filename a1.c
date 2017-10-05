@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     // testing prime list
     printf("Printing prime list for process %d\n", p_rank);
     for (int i = i_start; i < i_start + evaluate_length; i++) {
-       printf("%lld ", primes[i]);
+       printf("%lld ", *primes[i]);
     }
     printf("\n");
     
