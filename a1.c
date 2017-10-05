@@ -77,6 +77,7 @@ int main(int argc, char **argv)
    
     if (p_rank > FIRST) {
        MPI_Recv(primes, COUNT, MPI_LONG_LONG_INT, FIRST, 0, MPI_COMM_WORLD, &status);
+       printf("Process %d got primes!\n", p_rank);
     }
        
     /******************** split up array for load balancing ********************/
