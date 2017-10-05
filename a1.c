@@ -66,7 +66,7 @@ int main(int argc, char **argv)
      printf("\n");
      
      for (int dest = 1; dest < num_processors; dest++) {
-       MPI_Send(primes, COUNT, MPI_INT, dest, 0, MPI_COMM_WORLD);
+       MPI_Send(&primes, COUNT, MPI_INT, dest, 0, MPI_COMM_WORLD);
      }
   }
    
