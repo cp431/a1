@@ -24,18 +24,19 @@ void init_prime_list(long long int *list, const long long int *problem_size)
 		//printf("%ld\n", prime);
 		//printf("Prime %lld: %lld", prime_count, prime);
 		
-		long long int i = 3;
+		long long int i = 3, c;
 		list[0] = 2LL;
 		for (long long int count = 2; count < problem_size; ) {
-		   for ( long long int c = 2 ; c <= i - 1 ; c++ ) {
-			if ( i%c == 0 )
+		   for (c = 2 ; c <= i - 1 ; c++) {
+			if (i % c == 0)
 			   break;
-		      }  if ( c == i ) {
-			   list[count] = i;
-			   count++;
-		      }
-		      i++;
+		      }  
+		   if (c == i) {
+		   	list[count] = i;
+			count++;
 		   }
+		   i++;
+		 }
 		
 		// Determine the next prime number greater than the last prime added to the list.
 		//mpz_nextprime(next_prime, previous_prime);
