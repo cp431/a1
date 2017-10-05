@@ -127,6 +127,7 @@ int main(int argc, char **argv)
          gmp_printf("Prime 2: %Zd\n", *(get_prime_list_element_at(&list, &j)));
       
   		   subtract_primes(*(get_prime_list_element_at(&list, &i)), *(get_prime_list_element_at(&list, &j)), diff);
+         gmp_print("Difference: %Zd", diff);
   		
          if (mpz_cmp(diff, max_diff) > 0LL)
          {
