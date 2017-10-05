@@ -26,7 +26,7 @@
 int main(int argc, char **argv) 
 {
    
-  long long int problem_size = 100000LL;
+  long long int problem_size = 100LL;
   int num_processors = 0;
   double start_time = 0.0;
   double end_time = 0.0;
