@@ -44,6 +44,7 @@ int main(int argc, char **argv)
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &num_processors);
+  num_processors--;
   
   char temp_prime_1[BUFF];
   char temp_prime_2[BUFF];
