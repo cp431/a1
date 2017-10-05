@@ -23,10 +23,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Must do this in order to call those inline functions in this module, because inline is powerful but weird.
-extern inline long long int* get_prime_list_element_at(const prime_list *list, const long long int *index);
-extern inline const long long int* get_prime_list_length(const prime_list *list);
-
 int main(int argc, char **argv) 
 {
    
@@ -91,7 +87,7 @@ int main(int argc, char **argv)
          {
             printf("Boop Beep! Process %d here, found a new maximum!\n", p_rank);
             printf("New max: %lld\n", diff);
-            max_diff = diff
+            max_diff = diff;
             prime1_index = i;
             prime2_index = j;
          }
@@ -101,23 +97,23 @@ int main(int argc, char **argv)
     printf("temp_prime_1 @ process %d: %lld\n", p_rank, temp_prime_1);
     printf("temp_prime_2 @ process %d: %lld\n", p_rank, temp_prime_2);
                 
-    MPI_Send(temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
-    MPI_Send(temp_prime_2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
-    MPI_Send(temp_prime_gap, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME_GAP, MPI_COMM_WORLD);
+    MPI_Send(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
+    MPI_Send(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
+    MPI_Send(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME_GAP, MPI_COMM_WORLD);
   }
    
    if (p_rank == FIRST) {
       
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
       
-     init_prime_list(&primes, &problem_size);
+     init_prime_list(primes, &problem_size);
 
      // Return largest prime gap from other processors
      for (int source = 1; source < num_processors; ++source) { 
 
-        MPI_Recv(temp_prime_1, COUNT, MPI_LONG_LONG_INT, source, PRIME1, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_2, COUNT, MPI_LONG_LONG_INT, source, PRIME2, MPI_COMM_WORLD, &status);
-        MPI_Recv(temp_prime_gap, COUNT, MPI_LONG_LONG_INT, source, PRIME_GAP, MPI_COMM_WORLD, &status);
+        MPI_Recv(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, source, PRIME1, MPI_COMM_WORLD, &status);
+        MPI_Recv(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, source, PRIME2, MPI_COMM_WORLD, &status);
+        MPI_Recv(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, source, PRIME_GAP, MPI_COMM_WORLD, &status);
         
         printf("temp_prime_gap @ process %d: %lld\n", source, temp_prime_gap);
         printf("greatest_prime_1 @ process %d: %lld\n", source, greatest_prime_1);
@@ -125,7 +121,7 @@ int main(int argc, char **argv)
        
         
         if (temp_prime_gap > greatest_prime_gap) {
-           greatest_prime_gap = temp_prime_gap_mpz;
+           greatest_prime_gap = temp_prime_gap;
            greatest_prime_1 = temp_prime_1;
            greatest_prime_2 = temp_prime_2;
         }
