@@ -116,9 +116,9 @@ int main(int argc, char **argv)
         MPI_Recv(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, source, PRIME2, MPI_COMM_WORLD, &status);
         MPI_Recv(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, source, PRIME_GAP, MPI_COMM_WORLD, &status);
         
-        printf("temp_prime_gap @ process %d: %d\n", source, temp_prime_gap);
-        printf("greatest_prime_1 @ process %d: %d\n", source, greatest_prime_1);
-        printf("greatest_prime_2 @ process %d: %d\n", source, greatest_prime_2);
+        printf("temp_prime_gap @ process %d: %lld\n", source, temp_prime_gap);
+        printf("greatest_prime_1 @ process %d: %lld\n", source, greatest_prime_1);
+        printf("greatest_prime_2 @ process %d: %lld\n", source, greatest_prime_2);
        
         
         if (temp_prime_gap > greatest_prime_gap) {
@@ -130,8 +130,8 @@ int main(int argc, char **argv)
 
      end_time = MPI_Wtime();
      printf("\nWallclock time elapsed: %.2lf seconds\n", end_time - start_time);
-     printf("The largest prime gap is: %d\n", greatest_prime_gap);
-     printf("This gap is realized by the difference between %d and %d\n", greatest_prime_1, greatest_prime_2); 
+     printf("The largest prime gap is: %lld\n", greatest_prime_gap);
+     printf("This gap is realized by the difference between %lld and %lld\n", greatest_prime_1, greatest_prime_2); 
   }
    
   
