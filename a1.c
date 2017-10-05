@@ -76,7 +76,7 @@ int main(int argc, char **argv)
    if (p_rank < problem_size % num_processors)
   			evaluate_length += 1;
 
-  	i_start = p_rank * floor(problem_size / num_processors) + ((p_rank < num_processors) ? (p_rank) : num_processors);
+  	i_start = (p_rank - 1) * floor(problem_size / num_processors) + (((p_rank - 1) < num_processors) ? (p_rank - 1) : num_processors);
    
    prime_list list;
    init_prime_list(&list, &i_start, &evaluate_length);
