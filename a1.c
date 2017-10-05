@@ -60,7 +60,7 @@ int main(int argc, char **argv)
      printf("Initializing list complete!");
      // testing prime list
      printf("Printing prime list for process %d\n", p_rank);
-     for (int i = 0; i < evaluate_length; i++) {
+     for (int i = 0; i < *problem_size; i++) {
         printf("%lld ", primes[i]);
      }
      printf("\n");
