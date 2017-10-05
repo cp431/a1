@@ -46,24 +46,21 @@ int main(int argc, char **argv)
   long long int greatest_prime_2 = 0LL;
   long long int greatest_prime_gap = 0LL;
   
-  long long int *root_primes = NULL; 
   long long int *primes = calloc(problem_size, sizeof(long long int));
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
-     
-     root_primes = malloc(sizeof(long long int) * problem_size);
-     
+
      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
      printf("Initializing list...\n");
-     init_prime_list(root_primes, &problem_size);
+     init_prime_list(primes, &problem_size);
      printf("Initializing list complete!\n");
      // testing prime list
      printf("Printing prime list for process %d\n", p_rank);
      for (int i = 0; i < problem_size; i++) {
-        printf("%lld ", root_primes[i]);
+        printf("%lld ", primes[i]);
      }
      printf("\n");
      
@@ -76,7 +73,7 @@ int main(int argc, char **argv)
     MPI_Barrier(MPI_COMM_WORLD);
    
     MPI_Bcast(
-       root_primes,
+       primes,
        10,
        MPI_LONG_LONG_INT,
        FIRST,
