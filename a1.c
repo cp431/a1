@@ -105,13 +105,13 @@ int main(int argc, char **argv) {
          }
     }
    
-    mpz_export(&temp_prime_1, 0, -1, sizeof(long long int), 0, 0, previous_prime);
-    mpz_export(&temp_prime_2, 0, -1, sizeof(long long int), 0, 0, next_prime);
-    mpz_export(&temp_prime_gap, 0, -1, sizeof(long long int), 0, 0, max_diff);
+    mpz_export(&prime1, 0, -1, sizeof(long long int), 0, 0, previous_prime);
+    mpz_export(&prime2, 0, -1, sizeof(long long int), 0, 0, next_prime);
+    mpz_export(&max_diff, 0, -1, sizeof(long long int), 0, 0, max_diff);
                 
-    MPI_Send(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
-    MPI_Send(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
-    MPI_Send(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME_GAP, MPI_COMM_WORLD);
+    MPI_Send(&prime1, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME1, MPI_COMM_WORLD);
+    MPI_Send(&prime2, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME2, MPI_COMM_WORLD);
+    MPI_Send(&max_diff, COUNT, MPI_LONG_LONG_INT, FIRST, PRIME_GAP, MPI_COMM_WORLD);
    
     if (p_rank == FIRST) {
            // Return largest prime gap from other processors
