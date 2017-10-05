@@ -52,8 +52,17 @@ int main(int argc, char **argv)
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
-     init_prime_list(primes, &problem_size);
-  }
+      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
+      printf("Initializing list...\n");
+       init_prime_list(primes, &problem_size);
+      printf("Initializing list complete!\n");
+      // testing prime list
+      printf("Printing prime list for process %d\n", p_rank);
+      for (int i = 0; i < problem_size; i++) {
+         printf("%lld ", primes[i]);
+      }
+      printf("\n");
+    }
 
    /******************** all tasks do this part ***********************/
    
@@ -85,6 +94,7 @@ int main(int argc, char **argv)
    		
          j = i + 1;
   		   diff = primes[j] - primes[i];
+         printf("Difference: %lld\n", diff);
   		
          if (diff > max_diff) {
             max_diff = diff;
