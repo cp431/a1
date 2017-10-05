@@ -51,7 +51,7 @@ int main(int argc, char **argv)
   long long int greatest_prime_2 = 0LL;
   long long int greatest_prime_gap = 0LL;
   
-  long long int *primes = calloc(problem_size + 1, sizeof(long long int));
+  long long int *primes = calloc(problem_size, sizeof(long long int));
    
   /******************** task with rank 0 does this part ********************/
   start_time = MPI_Wtime();   /* Initialize start time */
@@ -91,7 +91,11 @@ int main(int argc, char **argv)
     int other_bit = MIN(p_rank, problem_size % num_processors);
 
   	 i_start = p_rank * evaluate_length + other_bit;
-    evaluate_length++;
+   
+    if (p_rank != num_processors - 1) {
+       evaluate_length++;
+    }
+    
    
      printf("i_start for process %d: %lld\n", p_rank, i_start);
       
