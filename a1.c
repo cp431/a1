@@ -66,16 +66,21 @@ int main(int argc, char **argv)
         printf("%lld ", root_primes[i]);
      }
      printf("\n");
+     
+     
+     
   }
-   
-   
+
    /******************** all other tasks do this part ***********************/
    
     MPI_Barrier(MPI_COMM_WORLD);
-
-    MPI_Scatter(root_primes, 6, MPI_LONG_LONG_INT,
-        primes, 6, MPI_LONG_LONG_INT, FIRST,
-        MPI_COMM_WORLD);
+   
+    MPI_Bcast(
+       root_primes,
+       10,
+       MPI_LONG_LONG_INT,
+       FIRST,
+       MPI_COMM_WORLD)
        
     /******************** split up array for load balancing ********************/
     long long int evaluate_length = 0LL, i_start = 0LL, max_diff = 0LL, diff = 0LL;
