@@ -17,7 +17,7 @@ void init_prime_list(long long int *list, const long long int *problem_size)
 		// Add another prime number to the list.
 		//mpz_export(&list[prime_count], NULL, -1, sizeof(long long int), -1, 0, previous_prime);
 		mpz_set(temp, previous_prime);
-		gmp_printf("Prime %lld:, %Zd", prime_count, temp);
+		gmp_printf("Prime %lld: %Zd\n", prime_count, temp);
 		list[prime_count] = mpz_get_si(previous_prime);
 		
 		// Determine the next prime number greater than the last prime added to the list.
