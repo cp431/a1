@@ -139,9 +139,9 @@ int main(int argc, char **argv)
          }
     }
     
-    mpz_get_str(temp_prime_1, BASE_DECIMAL, max_diff);
-    mpz_get_str(temp_prime_2, BASE_DECIMAL, *(get_prime_list_element_at(&list, &prime1_index)));
-    mpz_get_str(temp_prime_gap, BASE_DECIMAL, *(get_prime_list_element_at(&list, &prime2_index)));
+    mpz_get_str(temp_prime_gap, BASE_DECIMAL, max_diff);
+    mpz_get_str(temp_prime_1, BASE_DECIMAL, *(get_prime_list_element_at(&list, &prime1_index)));
+    mpz_get_str(temp_prime_2, BASE_DECIMAL, *(get_prime_list_element_at(&list, &prime2_index)));
        
     mpz_clear(max_diff);
     mpz_clear(diff);
