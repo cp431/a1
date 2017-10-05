@@ -74,7 +74,7 @@ int main(int argc, char **argv)
    
     MPI_Bcast(
        primes,
-       10,
+       problem_size,
        MPI_LONG_LONG_INT,
        FIRST,
        MPI_COMM_WORLD);
