@@ -62,16 +62,16 @@ int main(int argc, char **argv)
   start_time = MPI_Wtime();   /* Initialize start time */
    
   if (p_rank == FIRST) {
-      printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
+//       printf("Beep Boop! Process %d here, starting my stuff!\n", p_rank);
       printf("Initializing list...\n");
        init_prime_list(primes, &problem_size);
       printf("Initializing list complete!\n");
-      // testing prime list
-      printf("Printing prime list for process %d\n", p_rank);
-      for (int i = 0; i < problem_size; i++) {
-         printf("%lld ", primes[i]);
-      }
-      printf("\n");
+//       // testing prime list
+//       printf("Printing prime list for process %d\n", p_rank);
+//       for (int i = 0; i < problem_size; i++) {
+//          printf("%lld ", primes[i]);
+//       }
+//       printf("\n");
     }
 
    /******************** all tasks do this part ***********************/
@@ -102,24 +102,24 @@ int main(int argc, char **argv)
     }
     
    
-     printf("i_start for process %d: %lld\n", p_rank, i_start);
+//      printf("i_start for process %d: %lld\n", p_rank, i_start);
       
-     // testing prime list
-     printf("Printing prime list for process %d\n", p_rank);
-     for (int i = i_start; i < i_start + evaluate_length; i++) {
-        printf("%lld ", primes[i]);
-     }
-     printf("\n");
+//      // testing prime list
+//      printf("Printing prime list for process %d\n", p_rank);
+//      for (int i = i_start; i < i_start + evaluate_length; i++) {
+//         printf("%lld ", primes[i]);
+//      }
+//      printf("\n");
     
    long long int j = 0LL, prime1_index = 0LL, prime2_index = 0LL; 
-   printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
+//    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
   	for (long long int i = i_start; i < i_start + evaluate_length - 1; ++i) {
    		
          j = i + 1;
   		   diff = primes[j] - primes[i];
-         printf("Prime 1 at index %lld: %lld\n", i, primes[i]);
-         printf("Prime 2 at index %lld: %lld\n", j, primes[j]);
-         printf("Difference: %lld\n", diff);
+//          printf("Prime 1 at index %lld: %lld\n", i, primes[i]);
+//          printf("Prime 2 at index %lld: %lld\n", j, primes[j]);
+//          printf("Difference: %lld\n", diff);
   		
          if (diff > max_diff) {
             max_diff = diff;
