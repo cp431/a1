@@ -69,6 +69,7 @@ int main(int argc, char **argv) {
   long long int greatest_prime_gap = 0LL;
 
   // Initialize start time
+  MPI_Barrier(MPI_COMM_WORLD);
   start_time = MPI_Wtime();   
 
   /******************** Split up array for load balancing ********************/
