@@ -94,9 +94,9 @@ int main(int argc, char **argv) {
          mpz_nextprime(next_prime, previous_prime);
          mpz_sub(diff, next_prime, previous_prime);
       
-         gmp_printf("Prime 1: %Zd\n", previous_prime);
-         gmp_printf("Prime 2: %Zd\n", next_prime);
-         gmp_printf("Difference: %Zd\n", diff);
+//          gmp_printf("Prime 1: %Zd\n", previous_prime);
+//          gmp_printf("Prime 2: %Zd\n", next_prime);
+//          gmp_printf("Difference: %Zd\n", diff);
   		
          if (mpz_cmp(diff, max_diff) == 1) {
             mpz_set(max_diff, diff);
