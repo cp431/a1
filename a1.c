@@ -76,17 +76,20 @@ int main(int argc, char **argv) {
        evaluate_length++;
     }
    
-   mpz_t previous_prime, next_prime, diff, max_diff, prime1, prime2;
+   mpz_t previous_prime, next_prime, diff, max_diff, prime1, prime2, end_prime;
    mpz_init_set_si(previous_prime, i_start);
    mpz_init_set_si(next_prime, i_start);
    mpz_init(diff);
+   mpz_init_set_si(end_prime, evaluate_length);
    mpz_init(max_diff);
    mpz_init(prime1);
    mpz_init(prime2);
    mpz_nextprime(next_prime, previous_prime);
+   mpz_nextprime(end_prime, evaluate_length);
    
    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
-   for (long long int i = i_start; i < i_start + evaluate_length; ++i) {
+   //for (long long int i = i_start; i < i_start + evaluate_length; ++i) {
+   while (mpz_cmp(end_prime, next_prime) == 1) {
 	 
 	 mpz_set(previous_prime, next_prime);
 
@@ -103,10 +106,10 @@ int main(int argc, char **argv) {
             mpz_set(prime1, previous_prime);
             mpz_set(prime2, next_prime);
          }
-	 if (i == i_start)
-		 gmp_printf("FIRST prime for %d: %Zd\n", p_rank,previous_prime);
-   	 else if (i == i_start + evaluate_length - 1)
-		gmp_printf("LAST prime for %d: %Zd\n", p_rank,previous_prime);
+// 	 if (i == i_start)
+// 		 gmp_printf("FIRST prime for %d: %Zd\n", p_rank,previous_prime);
+//    	 else if (i == i_start + evaluate_length - 1)
+// 		gmp_printf("LAST prime for %d: %Zd\n", p_rank,previous_prime);
     }
    
     mpz_export(&temp_prime_1, 0, -1, sizeof(long long int), 0, 0, prime1);
