@@ -72,9 +72,9 @@ int main(int argc, char **argv) {
 
     i_start = p_rank * evaluate_length + other_bit;
    
-//     if (p_rank != num_processors - 1) {
-//        evaluate_length++;
-//     }
+    if (p_rank != num_processors - 1) {
+       evaluate_length++;
+    }
    
    mpz_t previous_prime, next_prime, diff, max_diff, prime1, prime2;
    mpz_init_set_si(previous_prime, i_start);
