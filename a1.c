@@ -67,12 +67,13 @@ int main(int argc, char **argv) {
   long long int greatest_prime_1 = 0LL;
   long long int greatest_prime_2 = 0LL;
   long long int greatest_prime_gap = 0LL;
-
-  // Initialize start time
+   
+  // Wait for all processes to finish initialization
   MPI_Barrier(MPI_COMM_WORLD);
+  // Initialize start time
   start_time = MPI_Wtime();   
 
-  /******************** Split up array for load balancing ********************/
+  /******************** Load balancing ********************/
   long long int evaluate_length = 0LL, i_start = 0LL;
 
   evaluate_length = floor(problem_size / num_processors);
