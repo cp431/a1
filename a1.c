@@ -4,6 +4,7 @@
    This program will eventually do things.
 */
 
+// Include statment(s)
 #include "mpi.h"
 #include <gmp.h>
 #include <stdio.h>
@@ -11,11 +12,12 @@
 #include <stdlib.h>
 #include <math.h>
 
+// Macro definition(s)
 #ifndef MIN
 #define MIN(a,b) (((a) < (b)) ? (a) : (b))
 #endif
 
-// Misc Constants
+// Constant definition(s)
 #define FIRST 0
 #define BASE_DECIMAL 10
 
@@ -28,53 +30,60 @@
 
 int main(int argc, char **argv) {
   
+   // Error message prompting user for command line arguments
    if (argc < 2) {
      printf("ERROR: Missing problem size. Please specify on the command line.\n");
      return -1;
   }
-   
+  
+  // Define problem paramaters
   long long int problem_size = atoll(argv[1]);
   int num_processors = 0;
+  int p_rank = 0;
+  
+  // Initialize start/end time 
   double start_time = 0.0;
   double end_time = 0.0;
-  int p_rank = 0;
+  
+  // Define MPI status and request variables
   MPI_Status status;
   MPI_Request request;
 
+  // Begin parallel process(es)
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &num_processors);
   
+  // Define temporary variables to store potential solutions
   long long int temp_prime_1 = 0LL;
   long long int temp_prime_2 = 0LL;
   long long int temp_prime_gap = 0LL;
 
+  // Define variables to store correct solutions
   long long int greatest_prime_1 = 0LL;
   long long int greatest_prime_2 = 0LL;
   long long int greatest_prime_gap = 0LL;
+
+  // Initialize start time
+  start_time = MPI_Wtime();   
    
-  /******************** task with rank 0 does this part ********************/
-   
-  start_time = MPI_Wtime();   /* Initialize start time */
-   
-  /******************** all tasks do this part ***********************/
   
        
-    /******************** split up array for load balancing ********************/
-    long long int evaluate_length = 0LL, i_start = 0LL;
+/******************** split up array for load balancing ********************/
+long long int evaluate_length = 0LL, i_start = 0LL;
 
-    evaluate_length = floor(problem_size / num_processors);
-     
-    if (p_rank < problem_size % num_processors)
-  			evaluate_length += 1;
-   
-    int other_bit = MIN(p_rank, problem_size % num_processors);
+evaluate_length = floor(problem_size / num_processors);
 
-    i_start = p_rank * evaluate_length + other_bit;
-   
-    if (p_rank != num_processors - 1) {
-       evaluate_length++;
-    }
+if (p_rank < problem_size % num_processors)
+		evaluate_length += 1;
+
+int other_bit = MIN(p_rank, problem_size % num_processors);
+
+i_start = p_rank * evaluate_length + other_bit;
+
+if (p_rank != num_processors - 1) {
+evaluate_length++;
+}
    
    mpz_t previous_prime, next_prime, diff, max_diff, prime1, prime2, end_prime;
    mpz_init_set_si(previous_prime, i_start);
