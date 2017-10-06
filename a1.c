@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
    gmp_printf("START for %d: %Zd, END: %Zd\n", p_rank, next_prime, end_prime);
    //printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
    //for (long long int i = i_start; i < i_start + evaluate_length; ++i) {
-   while (mpz_cmp(next_prime, end_prime) == 1) {
+   while (mpz_cmp(end_prime, next_prime) == 1) {
 	 
 	 mpz_set(previous_prime, next_prime);
 
