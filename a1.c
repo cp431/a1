@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
 
   /******************** Load balancing ********************/
   long long int evaluate_length = 0LL, i_start = 0LL;
-
+  // Calculate evaluate_length, the number of primes this processor has to loop through
   evaluate_length = floor(problem_size / num_processors);
 
   if (p_rank < problem_size % num_processors)
@@ -84,7 +84,8 @@ int main(int argc, char **argv) {
   int remainder = MIN(p_rank, problem_size % num_processors);
 
   i_start = p_rank * evaluate_length + remainder;
-
+   
+  // To create overlap between each sub-problem (excluding the last processor), 1 is added to evaluate_length.
   if (p_rank != num_processors - 1) {
   evaluate_length++;
   }
@@ -99,7 +100,7 @@ int main(int argc, char **argv) {
   mpz_init(prime1);
   mpz_init(prime2);
 
-  // Initialize and set preavious, next and end primes to initial indicies 
+  // Initialize and set previous, next and end primes to initial indicies 
   mpz_init_set_si(previous_prime, i_start);
   mpz_init_set_si(next_prime, i_start);
   mpz_init_set_si(end_prime, evaluate_length + i_start);
@@ -126,7 +127,7 @@ int main(int argc, char **argv) {
     }
   }
 
-  // Export each processors greatest found prime gap, as well as the two primes that created the gap
+  // Export each processor's greatest found prime gap, as well as the two primes that created the gap
   mpz_export(&temp_prime_1, 0, -1, sizeof(long long int), 0, 0, prime1);
   mpz_export(&temp_prime_2, 0, -1, sizeof(long long int), 0, 0, prime2);
   mpz_export(&temp_prime_gap, 0, -1, sizeof(long long int), 0, 0, max_diff);
@@ -142,7 +143,7 @@ int main(int argc, char **argv) {
     // Loop through each source processor 
     for (int source = 0; source < num_processors; ++source) { 
 
-      // Recieve each processors greatest found prime gap, as well as the two primes that created the gap
+      // Receive each processor's greatest found prime gap, as well as the two primes that created the gap
       MPI_Recv(&temp_prime_1, COUNT, MPI_LONG_LONG_INT, source, PRIME1, MPI_COMM_WORLD, &status);
       MPI_Recv(&temp_prime_2, COUNT, MPI_LONG_LONG_INT, source, PRIME2, MPI_COMM_WORLD, &status);
       MPI_Recv(&temp_prime_gap, COUNT, MPI_LONG_LONG_INT, source, PRIME_GAP, MPI_COMM_WORLD, &status);
