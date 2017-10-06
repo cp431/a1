@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
    mpz_t previous_prime, next_prime, diff, max_diff, prime1, prime2, end_prime;
    mpz_init_set_si(previous_prime, i_start);
    mpz_init_set_si(next_prime, i_start);
-   mpz_init_set_si(end_prime, evaluate_length);
+   mpz_init_set_si(end_prime, evaluate_length + i_start);
 	
    mpz_init(diff);
    mpz_init(max_diff);
