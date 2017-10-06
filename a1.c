@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
    for (long long int i = i_start; i < i_start + evaluate_length; ++i) {
 	 
 	 mpz_set(previous_prime, next_prime);
-	 printf("i_start: %lld\n", i_start);
+// 	 printf("i_start: %lld\n", i_start);
        
          mpz_nextprime(next_prime, previous_prime);
          mpz_sub(diff, next_prime, previous_prime);
