@@ -79,13 +79,15 @@ int main(int argc, char **argv) {
    mpz_t previous_prime, next_prime, diff, max_diff, prime1, prime2, end_prime;
    mpz_init_set_si(previous_prime, i_start);
    mpz_init_set_si(next_prime, i_start);
-   mpz_init(diff);
    mpz_init_set_si(end_prime, evaluate_length);
+	
+   mpz_init(diff);
    mpz_init(max_diff);
    mpz_init(prime1);
    mpz_init(prime2);
+	
    mpz_nextprime(next_prime, previous_prime);
-   mpz_nextprime(end_prime, evaluate_length);
+   mpz_nextprime(end_prime, end_prime);
    
    printf("Doot Doot! Process %d here, starting to compare primes!\n", p_rank); 
    //for (long long int i = i_start; i < i_start + evaluate_length; ++i) {
