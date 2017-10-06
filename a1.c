@@ -89,7 +89,10 @@ int main(int argc, char **argv) {
    for (long long int i = i_start; i < i_start + evaluate_length; ++i) {
 	 
 	 mpz_set(previous_prime, next_prime);
-	 printf("i_start: %lld\n", i_start);
+	 if (i == i_start)
+		 printf("i_start for process %d: %lld\n", p_rank, i_start);
+   	 else if (i == i_start + evaluate_length - 1)
+		gmp_printf("last prime: %Zd\n", previous_prime);
        
          mpz_nextprime(next_prime, previous_prime);
          mpz_sub(diff, next_prime, previous_prime);
